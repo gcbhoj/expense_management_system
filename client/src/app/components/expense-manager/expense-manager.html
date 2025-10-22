@@ -1,1 +1,53 @@
-<p>expense-manager works!</p>
+<div class="container border border-2 ms-5 mt-5">
+  <div class="row">
+    <!-- First column -->
+    <div
+      id="sidePanel"
+      class="col border-2 m-2"
+      style="flex: 0 0 250px; max-width: 250px"
+    >
+      <ul class="list-group gap-5 m-2">
+        <li
+          class="list-group-item d-flex justify-content-center mt-5 btn"
+          data-bs-toggle="collapse"
+          href="#addNewReceipt"
+          role="button"
+          aria-expanded="false"
+          aria-controls="addNewReceipt"
+        >
+          Present Expenses
+        </li>
+        <li class="list-group-item d-flex justify-content-center" type="button">
+          Approved Expenses
+        </li>
+        <li class="list-group-item d-flex justify-content-center" type="button">
+          Pending Approvals
+        </li>
+        <li
+          class="list-group-item d-flex justify-content-center mb-5"
+          type="button"
+        >
+          Not Submitted
+        </li>
+      </ul>
+    </div>
+
+    <!-- Second column -->
+    <div class="col border border-2 m-2 flex grow-1">
+      <div>
+        <div class="collapse" id="addNewReceipt">
+          <div class="card card-body">
+            <button
+              type="button"
+              class="btn-close position-absolute top-0 end-0 m-2"
+              data-bs-toggle="collapse"
+              data-bs-target="#addNewReceipt"
+              aria-label="Close"
+            ></button>
+            <app-presentexpenses></app-presentexpenses>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

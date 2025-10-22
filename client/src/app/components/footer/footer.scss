@@ -1,5 +1,5 @@
 footer {
-  position: fixed; /* keeps it always visible */
+  // position: fixed; /* keeps it always visible */
   bottom: 0; /* stick to bottom */
   left: 0;
   width: 100%; /* full width */
@@ -11,11 +11,12 @@ footer {
   margin-bottom: 1px;
   background-color: blanchedalmond;
   text-transform: lowercase;
+  margin-top: 15px;
 }
 h6 {
   font-size: 12px;
 }
-a{
+a {
   text-transform: capitalize;
   font-style: italic;
 }
