@@ -1,0 +1,28 @@
+footer {
+  position: fixed; /* keeps it always visible */
+  bottom: 0; /* stick to bottom */
+  left: 0;
+  width: 100%; /* full width */
+  background-color: #f8f9fa;
+  text-align: center;
+  padding: 10px 0;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  margin-bottom: 1px;
+  background-color: blanchedalmond;
+  text-transform: lowercase;
+}
+h6 {
+  font-size: 12px;
+}
+a{
+  text-transform: capitalize;
+  font-style: italic;
+}
+
+/* Hide footer on small devices */
+@media (max-width: 767px) {
+  footer.footer {
+    display: none;
+  }
+}

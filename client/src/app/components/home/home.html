@@ -1,0 +1,90 @@
+<div class="container-lg my-3 p-3 rounded">
+  <p class="mb-0 text-center fw-medium">
+    Welcome to our Expense reimbursement System.
+  </p>
+</div>
+
+<div
+  id="carouselExample"
+  class="carousel slide border border-2 rounded shadow-lg"
+  data-bs-ride="carousel"
+  data-bs-interval="5000"
+>
+  <div class="carousel-inner text-center p-5">
+    <div class="carousel-item active">
+      <h3 class="fw-bold">problem statement</h3>
+      <p class="text-muted">
+        Current expense reporting is manual, time-consuming, and leads to lost
+        receipts and delayed reimbursements.
+      </p>
+    </div>
+
+    <div class="carousel-item">
+      <h3 class="fw-bold">solution</h3>
+      <p class="text-muted">
+        Automated workflow from receipt capture to payment with full audit
+        trails and real-time tracking.
+      </p>
+    </div>
+
+    <div class="carousel-item">
+      <h3 class="fw-bold">project description</h3>
+      <p class="text-muted">
+        ExpenseFlow is an expense report management system that automates the
+        employee reimbursement process. Employees upload receipt images, create
+        expense reports, and submit them for approval. Managers review and
+        approve reports through a workflow system. The application au-
+        tomatically generates formatted Excel reports using Apache POI and
+        processes reimbursements through the Stripe payment API.
+      </p>
+    </div>
+    <div class="carousel-item">
+      <h3 class="fw-bold">technologies used</h3>
+      <ul class="text-start d-inline-block">
+        <li>Spring Boot + Spring WebFlux — Reactive REST API backend</li>
+        <li>Angular — Frontend application</li>
+        <li>Hibernate — Database ORM and receipt image storage</li>
+        <li>PostgreSQL — Database</li>
+        <li>Apache POI — Generate formatted Excel reports</li>
+        <li>Stripe API — Payment processing</li>
+        <li>MapStruct — DTO mapping</li>
+        <li>Liquibase — Database versioning and sample data</li>
+        <li>OpenAPI (Swagger) — API documentation</li>
+        <li>Docker — Containerization and deployment</li>
+        <li>Spring Boot Admin — Application monitoring</li>
+      </ul>
+    </div>
+    <div class="carousel-item">
+      <h3 class="fw-bold">key features</h3>
+      <ul class="text-start d-inline-block">
+        <li>Receipt upload and storage (Hibernate blob storage)</li>
+        <li>Expense entry and categorization</li>
+        <li>Report submission and approval workflow</li>
+        <li>Excel report generation with charts (Apache POI)</li>
+        <li>Payment processing via Stripe API</li>
+        <li>manager approval dashboard.</li>
+        <li>analytics and spending tracking.</li>
+      </ul>
+    </div>
+  </div>
+
+  <button
+    class="carousel-control-prev"
+    type="button"
+    data-bs-target="#carouselExample"
+    data-bs-slide="prev"
+  >
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+
+  <button
+    class="carousel-control-next"
+    type="button"
+    data-bs-target="#carouselExample"
+    data-bs-slide="next"
+  >
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>

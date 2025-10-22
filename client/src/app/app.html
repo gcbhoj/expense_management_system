@@ -1,1 +1,15 @@
-<h3 class="border-2 border w-25 text-danger">hello from Bhoj</h3>
+<app-navbar
+  [firstStudentEmail]="firstStudentEmail"
+  [secondStudentEmail]="secondStudentEmail"
+  [firstStudentName]="firstStudentName"
+  [secondStudentName]="secondStudentName"
+></app-navbar>
+
+<router-outlet></router-outlet>
+
+<app-footer
+  [firstStudentEmail]="firstStudentEmail"
+  [secondStudentEmail]="secondStudentEmail"
+  [firstStudentName]="firstStudentName"
+  [secondStudentName]="secondStudentName"
+></app-footer>

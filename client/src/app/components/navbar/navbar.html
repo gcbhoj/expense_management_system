@@ -1,0 +1,59 @@
+<!-- Top navbar for large devices -->
+<nav class="navbar navbar-expand d-none d-lg-flex me-1 ms-1 mt-1 rounded">
+  <div class="container-fluid justify-content-center">
+    <a class="navbar-brand" [routerLink]="['home']" type="button">Home</a>
+    <ul class="navbar-nav">
+      <li class="nav-item me-2 ms-2">
+        <a
+          class="nav-link btn btn-outline-primary"
+          type="button"
+          [routerLink]="['expense-manager']"
+          >Expense Manager</a
+        >
+      </li>
+      <li class="nav-item ms-2">
+        <a
+          class="nav-link btn btn-outline-primary"
+          type="button"
+          [routerLink]="['aboutus']"
+          >About Us</a
+        >
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Floating sidebar for medium devices -->
+<nav
+  class="floating-sidebar d-none d-md-flex d-lg-none flex-column justify-content-center align-items-center"
+>
+  <a [routerLink]="['home']" class="p-3" title="Home" type="button">🏠</a>
+  <a
+    [routerLink]="['expense-manager']"
+    class="p-3"
+    title="Expense Manager"
+    type="button"
+    >💰</a
+  >
+  <a [routerLink]="['aboutus']" class="p-3" title="About Us" type="button"
+    >👨‍🎓</a
+  >
+</nav>
+
+<!-- Bottom bar for small devices -->
+<nav
+  class="floating-sidebar d-flex d-md-none justify-content-center align-items-center"
+>
+  <a [routerLink]="['home']" class="p-3" title="Home" type="button">🏠</a>
+  <a
+    [routerLink]="['expense-manager']"
+    class="p-3"
+    title="Expense Manager"
+    type="button"
+    >💰</a
+  >
+  <a [routerLink]="['aboutus']" class="p-3" title="About Us" type="button"
+    >👨‍🎓</a
+  >
+
+</nav>

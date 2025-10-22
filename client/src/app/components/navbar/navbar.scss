@@ -1,0 +1,29 @@
+/* Sidebar for medium devices */
+.floating-sidebar.d-md-flex {
+  position: fixed;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
+  background-color: gray;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px gray;
+  z-index: 1000;
+  flex-direction: column;
+}
+
+/* Bottom bar for small devices */
+.floating-sidebar.d-flex.d-md-none {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: gray;
+  border-radius: 50px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  flex-direction: row;
+}
+.navbar {
+  background-color: #9D69A3;
+}
+
