@@ -1,0 +1,18 @@
+[
+  {
+    "employeeId": "1234",
+    "employeeName": "John Smith",
+    "expenses": [
+      {
+        "expenseId": "987",
+        "expenseType": "Travel Expenses",
+        "expenseDescription": "Travel to Ottawa",
+        "expenseDate": "2025-10-20",
+        "expenseAmount":500,
+        "isApproved": true,
+        "approvedDate":"2025-10-21",
+        "approvedBy":"Jane Doe"
+      }
+    ]
+  }
+]

@@ -1,0 +1,122 @@
+[
+  {
+    "employeeId": "1001",
+    "employeeName": "John Smith",
+    "expenses": [
+      {
+        "expenseId": "987",
+        "expenseType": "Travel Expenses",
+        "expenseDescription": "Flight to Ottawa for client meeting",
+        "expenseDate": "2025-10-20",
+        "expenseAmount": 500,
+        "isApproved": true,
+        "approvedDate": "2025-10-21",
+        "approvedBy": "Jane Doe"
+      },
+      {
+        "expenseId": "988",
+        "expenseType": "Meal Expenses",
+        "expenseDescription": "Dinner with client",
+        "expenseDate": "2025-10-20",
+        "expenseAmount": 75,
+        "isApproved": true,
+        "approvedDate": "2025-10-21",
+        "approvedBy": "Jane Doe"
+      }
+    ]
+  },
+  {
+    "employeeId": "1002",
+    "employeeName": "Emily Carter",
+    "expenses": [
+      {
+        "expenseId": "991",
+        "expenseType": "Office Supplies",
+        "expenseDescription": "Printer ink and stationery",
+        "expenseDate": "2025-10-15",
+        "expenseAmount": 120.5,
+        "isApproved": false,
+        "approvedDate": "",
+        "approvedBy": ""
+      },
+      {
+        "expenseId": "992",
+        "expenseType": "Travel Expenses",
+        "expenseDescription": "Taxi to conference center",
+        "expenseDate": "2025-10-18",
+        "expenseAmount": 45,
+        "isApproved": true,
+        "approvedDate": "2025-10-19",
+        "approvedBy": "Mark Johnson"
+      }
+    ]
+  },
+  {
+    "employeeId": "1003",
+    "employeeName": "Raj Patel",
+    "expenses": [
+      {
+        "expenseId": "993",
+        "expenseType": "Accommodation",
+        "expenseDescription": "Hotel stay for business trip",
+        "expenseDate": "2025-10-10",
+        "expenseAmount": 320,
+        "isApproved": true,
+        "approvedDate": "2025-10-11",
+        "approvedBy": "Sarah Lee"
+      }
+    ]
+  },
+  {
+    "employeeId": "1004",
+    "employeeName": "Laura Kim",
+    "expenses": [
+      {
+        "expenseId": "994",
+        "expenseType": "Training Fees",
+        "expenseDescription": "Online professional development course",
+        "expenseDate": "2025-10-05",
+        "expenseAmount": 250,
+        "isApproved": false,
+        "approvedDate": "",
+        "approvedBy": ""
+      },
+      {
+        "expenseId": "995",
+        "expenseType": "Travel Expenses",
+        "expenseDescription": "Subway pass for client visits",
+        "expenseDate": "2025-10-09",
+        "expenseAmount": 35,
+        "isApproved": true,
+        "approvedDate": "2025-10-10",
+        "approvedBy": "Sarah Lee"
+      }
+    ]
+  },
+  {
+    "employeeId": "1005",
+    "employeeName": "Michael Brown",
+    "expenses": [
+      {
+        "expenseId": "996",
+        "expenseType": "Client Entertainment",
+        "expenseDescription": "Lunch with potential client",
+        "expenseDate": "2025-10-12",
+        "expenseAmount": 150,
+        "isApproved": true,
+        "approvedDate": "2025-10-13",
+        "approvedBy": "Jane Doe"
+      },
+      {
+        "expenseId": "997",
+        "expenseType": "Fuel Reimbursement",
+        "expenseDescription": "Personal vehicle used for delivery",
+        "expenseDate": "2025-10-19",
+        "expenseAmount": 60,
+        "isApproved": false,
+        "approvedDate": "",
+        "approvedBy": ""
+      }
+    ]
+  }
+]
