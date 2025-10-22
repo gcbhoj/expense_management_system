@@ -41,6 +41,14 @@ export class Presentexpenses {
       this.showError('Employee Name cannot be empty');
       return;
     }
+    //validate expense amount
+    if (
+      !this.newExpenses.expenseAmount ||
+      this.newExpenses.expenseAmount <= 0
+    ) {
+      this.showError('Expense Amount cannot be empty or less than zero.');
+      return;
+    }
 
     // Validate Receipt
     if (!this.newExpenses.expenseReceipt) {
