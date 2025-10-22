@@ -1,1 +1,15 @@
-<app-navbar></app-navbar>
+<app-navbar
+  [firstStudentEmail]="firstStudentEmail"
+  [secondStudentEmail]="secondStudentEmail"
+  [firstStudentName]="firstStudentName"
+  [secondStudentName]="secondStudentName"
+></app-navbar>
+
+<router-outlet></router-outlet>
+
+<app-footer
+  [firstStudentEmail]="firstStudentEmail"
+  [secondStudentEmail]="secondStudentEmail"
+  [firstStudentName]="firstStudentName"
+  [secondStudentName]="secondStudentName"
+></app-footer>
