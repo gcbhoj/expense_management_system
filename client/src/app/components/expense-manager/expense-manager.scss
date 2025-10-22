@@ -1,0 +1,19 @@
+li {
+  letter-spacing: 1.25px;
+  font-style: italic;
+  font-weight: 700;
+  border-radius: 5px;
+  box-shadow: 5px 5px 5px 5px gray;
+}
+
+li:hover {
+  background-color: aqua;
+  transform: translateY(-10px);
+  transition: all 0.2s ease;
+}
+
+#sidePanel {
+  background-color: silver;
+  border-radius: 5px;
+  box-shadow: -5px 5px 5px gray;
+}

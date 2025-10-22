@@ -1,0 +1,118 @@
+<div id="newExpForm">
+  <h3>enter expense information</h3>
+  <!-- employee id -->
+  <div class="form-floating mb-3">
+    <input
+      type="number"
+      class="form-control"
+      id="floatingInput"
+      step="1"
+      placeholder="employeeId"
+      [(ngModel)]="newExpenses.employeeId"
+    />
+    <label for="floatingInput">Employee Id:</label>
+  </div>
+  <!-- employee Name -->
+  <div class="form-floating mb-3">
+    <input
+      type="text"
+      class="form-control"
+      id="floatingInput"
+      [(ngModel)]="newExpenses.employeeName"
+      placeholder="employeeName"
+    />
+    <label for="floatingInput">Employee Name:</label>
+  </div>
+  <!-- expense type -->
+  <div class="form-floating mb-3">
+    <input
+      type="text"
+      class="form-control"
+      id="floatingInput"
+      [(ngModel)]="newExpenses.expenseType"
+      placeholder="employeeName"
+    />
+    <label for="floatingInput">Expense Type:</label>
+  </div>
+  <!-- expense description-->
+  <div class="form-floating mb-3">
+    <input
+      type="text"
+      class="form-control"
+      id="floatingInput"
+      [(ngModel)]="newExpenses.expenseDescription"
+      placeholder="employeeName"
+    />
+    <label for="floatingInput">Expense Description::</label>
+  </div>
+  <!-- expense Date -->
+  <div class="form-floating mb-3">
+    <input
+      type="date"
+      class="form-control"
+      id="floatingInput"
+      [(ngModel)]="newExpenses.expenseDate"
+      placeholder="employeeName"
+    />
+    <label for="floatingInput">Expense Date:</label>
+  </div>
+  <!-- receipt Upload -->
+  <div class="form-floating mb-3 mt-3">
+    <input
+      type="file"
+      class="form-control"
+      id="floatingFile"
+      placeholder="Upload file"
+      accept=".png,.jpeg,.jpg,.pdf"
+      [(ngModel)]="newExpenses.expenseReceipt"
+    />
+    <label for="floatingFile">Upload Receipt:</label>
+  </div>
+  <div class="d-flex justify-content-center">
+    <button type="submit" (click)="submitForm()">Submit</button>
+  </div>
+</div>
+
+<div class="toast-container position-fixed top-0 end-0 p-3">
+  <!-- ✅ Success Toast -->
+  <div
+    class="toast align-items-center text-bg-success border-0"
+    role="alert"
+    aria-live="assertive"
+    aria-atomic="true"
+    #successToast
+  >
+    <div class="d-flex">
+      <div class="toast-body">
+        {{ successMessage }}
+      </div>
+      <button
+        type="button"
+        class="btn-close btn-close-white me-2 m-auto"
+        data-bs-dismiss="toast"
+        aria-label="Close"
+      ></button>
+    </div>
+  </div>
+
+  <!-- ❌ Failure Toast -->
+  <div
+    class="toast align-items-center text-bg-danger border-0"
+    role="alert"
+    aria-live="assertive"
+    aria-atomic="true"
+    #errorToast
+  >
+    <div class="d-flex">
+      <div class="toast-body">
+        {{ errorMessage }}
+      </div>
+      <button
+        type="button"
+        class="btn-close btn-close-white me-2 m-auto"
+        data-bs-dismiss="toast"
+        aria-label="Close"
+      ></button>
+    </div>
+  </div>
+</div>
