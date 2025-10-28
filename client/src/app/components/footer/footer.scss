@@ -1,24 +1,43 @@
 footer {
-  // position: fixed; /* keeps it always visible */
-  bottom: 0; /* stick to bottom */
+  bottom: 0;
   left: 0;
-  width: 100%; /* full width */
-  background-color: #f8f9fa;
+  width: 100%;
+  background: #0f0f0f;
+  border-top: 1px solid #2a2a2a;
   text-align: center;
-  padding: 10px 0;
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
-  margin-bottom: 1px;
-  background-color: blanchedalmond;
-  text-transform: lowercase;
-  margin-top: 15px;
-}
-h6 {
-  font-size: 12px;
-}
-a {
-  text-transform: capitalize;
-  font-style: italic;
+  padding: 1.5rem 0;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+  margin-top: 3rem;
+
+  p {
+    margin-bottom: 0.5rem;
+    color: #9ca3af;
+    font-weight: 500;
+
+    span {
+      font-weight: 600;
+      color: #60a5fa;
+    }
+  }
+
+  a {
+    color: #60a5fa;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    padding: 0 0.5rem;
+
+    &:hover {
+      color: #93c5fd;
+    }
+  }
+
+  h6 {
+    font-size: 0.875rem;
+    color: #6b7280;
+    font-weight: 500;
+    margin: 0;
+  }
 }
 
 /* Hide footer on small devices */

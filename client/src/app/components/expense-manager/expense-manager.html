@@ -1,50 +1,93 @@
-<div class="container border border-2 ms-5 mt-5">
-  <div class="row">
-    <!-- First column -->
-    <div
-      id="sidePanel"
-      class="col border-2 m-2"
-      style="flex: 0 0 250px; max-width: 250px"
-    >
-      <ul class="list-group gap-5 m-2">
-        <li
-          class="list-group-item d-flex justify-content-center mt-5 btn"
-          data-bs-toggle="collapse"
-          href="#addNewReceipt"
-          role="button"
-          aria-expanded="false"
-          aria-controls="addNewReceipt"
-        >
-          Present Expenses
+<div class="container my-4 px-3">
+  <div class="row g-3 align-items-start">
+    <!-- Sidebar / Menu -->
+    <div id="sidePanel" class="col-12 col-md-3 mb-3 mb-md-0">
+      <ul class="list-group gap-3 m-0">
+        <li class="list-group-item p-0">
+          <button
+            class="w-100 btn list-action"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#presentPanel"
+            aria-expanded="true"
+            aria-controls="presentPanel"
+          >
+            Present Expenses
+          </button>
         </li>
-        <li class="list-group-item d-flex justify-content-center" type="button">
-          Approved Expenses
+        <li class="list-group-item p-0">
+          <button
+            class="w-100 btn list-action collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#approvedPanel"
+            aria-expanded="false"
+            aria-controls="approvedPanel"
+          >
+            Approved Expenses
+          </button>
         </li>
-        <li class="list-group-item d-flex justify-content-center" type="button">
-          Pending Approvals
+        <li class="list-group-item p-0">
+          <button
+            class="w-100 btn list-action collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#pendingPanel"
+            aria-expanded="false"
+            aria-controls="pendingPanel"
+          >
+            Pending Approvals
+          </button>
         </li>
-        <li
-          class="list-group-item d-flex justify-content-center mb-5"
-          type="button"
-        >
-          Not Submitted
+        <li class="list-group-item p-0">
+          <button
+            class="w-100 btn list-action collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#notSubmittedPanel"
+            aria-expanded="false"
+            aria-controls="notSubmittedPanel"
+          >
+            Not Submitted
+          </button>
         </li>
       </ul>
     </div>
 
-    <!-- Second column -->
-    <div class="col border border-2 m-2 flex grow-1">
-      <div>
-        <div class="collapse" id="addNewReceipt">
-          <div class="card card-body">
+    <!-- Content area -->
+    <div id="contentPanel" class="col-12 col-md-9">
+      <div id="panelGroup">
+        <div class="collapse show" id="presentPanel" data-bs-parent="#panelGroup">
+          <div class="card card-body position-relative">
             <button
               type="button"
               class="btn-close position-absolute top-0 end-0 m-2"
               data-bs-toggle="collapse"
-              data-bs-target="#addNewReceipt"
+              data-bs-target="#presentPanel"
               aria-label="Close"
             ></button>
             <app-presentexpenses></app-presentexpenses>
+          </div>
+        </div>
+
+        <div class="collapse" id="approvedPanel" data-bs-parent="#panelGroup">
+          <div class="card card-body">
+            <h5 class="text-info">Approved Expenses</h5>
+            <p class="text-muted mb-0">No approved expenses to display yet.</p>
+          </div>
+        </div>
+
+        <div class="collapse" id="pendingPanel" data-bs-parent="#panelGroup">
+          <div class="card card-body">
+            <h5 class="text-warning">Pending Approvals</h5>
+            <p class="text-muted mb-0">You have no pending approvals.</p>
+          </div>
+        </div>
+
+        <div class="collapse" id="notSubmittedPanel" data-bs-parent="#panelGroup">
+          <div class="card card-body">
+            <h5 class="text-secondary">Not Submitted</h5>
+            <p class="text-muted mb-0">Draft expenses will appear here.</p>
           </div>
         </div>
       </div>
