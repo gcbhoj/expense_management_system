@@ -1,8 +1,82 @@
-body {
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+* {
   box-sizing: border-box;
-  padding: 0;
   margin: 0;
-  font-family: "Times New Roman", Times, serif;
-  background-color: seashell;
-  text-transform: capitalize;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background: #0a0a0a;
+  min-height: 100vh;
+  color: #e5e7eb;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3a3a3a;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4a4a4a;
+}
+
+/* Bootstrap override for dark theme */
+.btn-outline-primary {
+  color: #60a5fa !important;
+  border-color: #60a5fa !important;
+  
+  &:hover {
+    background-color: #60a5fa !important;
+    color: #000 !important;
+  }
+}
+
+.form-control {
+  background-color: #1a1a1a !important;
+  border-color: #2a2a2a !important;
+  color: #e5e7eb !important;
+  
+  &:focus {
+    background-color: #1a1a1a !important;
+    border-color: #60a5fa !important;
+    color: #e5e7eb !important;
+    box-shadow: 0 0 0 0.2rem rgba(96, 165, 250, 0.25) !important;
+  }
+  
+  &::placeholder {
+    color: #6b7280 !important;
+  }
+}
+
+.form-floating label {
+  color: #9ca3af !important;
+}
+
+/* Fix: prevent placeholder text from overlapping with floating labels */
+.form-floating > .form-control::placeholder,
+.form-floating > .form-control::-ms-input-placeholder,
+.form-floating > .form-control:-ms-input-placeholder,
+.form-floating > .form-control::-moz-placeholder,
+.form-floating > .form-control:-moz-placeholder,
+.form-floating > textarea.form-control::placeholder {
+  color: transparent !important;
+}
+
+/* Ensure label remains readable on dark background */
+.form-floating > label {
+  padding-left: 0.75rem;
+  background: transparent;
 }

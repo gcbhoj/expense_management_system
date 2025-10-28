@@ -1,84 +1,82 @@
 <div id="newExpForm">
-  <h3>enter expense information</h3>
-  <!-- employee id -->
+  <h3>ENTER EXPENSE INFORMATION</h3>
+  <!-- Employee ID -->
   <div class="form-floating mb-3">
     <input
       type="number"
       class="form-control"
-      id="floatingInput"
+      id="employeeIdInput"
       step="1"
-      placeholder="employeeId"
+      placeholder=" "
       [(ngModel)]="newExpenses.employeeId"
     />
-    <label for="floatingInput">Employee Id:</label>
+    <label for="employeeIdInput">Employee Id:</label>
   </div>
-  <!-- employee Name -->
+  <!-- Employee Name -->
   <div class="form-floating mb-3">
     <input
       type="text"
       class="form-control"
-      id="floatingInput"
+      id="employeeNameInput"
       [(ngModel)]="newExpenses.employeeName"
-      placeholder="employeeName"
+      placeholder=" "
     />
-    <label for="floatingInput">Employee Name:</label>
+    <label for="employeeNameInput">Employee Name:</label>
   </div>
-  <!-- expense type-->
+  <!-- Expense Amount -->
   <div class="form-floating mb-3">
     <input
       type="number"
       class="form-control"
-      id="floatingInput"
+      id="expenseAmountInput"
       step=".01"
-      placeholder="employeeId"
+      placeholder=" "
       [(ngModel)]="newExpenses.expenseAmount"
     />
-    <label for="floatingInput">Expense Amount:</label>
+    <label for="expenseAmountInput">Expense Amount:</label>
   </div>
-  <!-- expense type -->
+  <!-- Expense Type -->
   <div class="form-floating mb-3">
     <input
       type="text"
       class="form-control"
-      id="floatingInput"
+      id="expenseTypeInput"
       [(ngModel)]="newExpenses.expenseType"
-      placeholder="employeeName"
+      placeholder=" "
     />
-    <label for="floatingInput">Expense Type:</label>
+    <label for="expenseTypeInput">Expense Type:</label>
   </div>
-  <!-- expense description-->
+  <!-- Expense Description -->
   <div class="form-floating mb-3">
     <input
       type="text"
       class="form-control"
-      id="floatingInput"
+      id="expenseDescriptionInput"
       [(ngModel)]="newExpenses.expenseDescription"
-      placeholder="employeeName"
+      placeholder=" "
     />
-    <label for="floatingInput">Expense Description::</label>
+    <label for="expenseDescriptionInput">Expense Description:</label>
   </div>
-  <!-- expense Date -->
-  <div class="form-floating mb-3">
+  <!-- Expense Date (no floating label to avoid native placeholder conflict) -->
+  <div class="mb-3">
+    <label class="form-label" for="expenseDateInput">Expense Date:</label>
     <input
       type="date"
       class="form-control"
-      id="floatingInput"
+      id="expenseDateInput"
       [(ngModel)]="newExpenses.expenseDate"
-      placeholder="employeeName"
     />
-    <label for="floatingInput">Expense Date:</label>
   </div>
-  <!-- receipt Upload -->
-  <div class="form-floating mb-3 mt-3">
+  <!-- Receipt Upload (no floating) -->
+  <div class="mb-3 mt-3">
+    <label class="form-label" for="receiptFileInput">Upload Receipt:</label>
     <input
       type="file"
       class="form-control"
-      id="floatingFile"
-      placeholder="Upload file"
+      id="receiptFileInput"
       accept=".png,.jpeg,.jpg,.pdf"
       [(ngModel)]="newExpenses.expenseReceipt"
     />
-    <label for="floatingFile">Upload Receipt:</label>
   </div>
   <div class="d-flex justify-content-center">
     <button type="submit" (click)="submitForm()">Submit</button>
