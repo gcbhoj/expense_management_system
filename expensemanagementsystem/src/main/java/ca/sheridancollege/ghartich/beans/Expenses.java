@@ -33,9 +33,9 @@ public class Expenses {
 	private LocalDate expenseDate;
 	@NonNull
 	private double expenseAmount;
-	@NonNull
+//	@NonNull
 	private ApprovalStatus approvalStatus;
-	@NonNull
+//	@NonNull
 	private String storageId;
 	
 	private Date approvedDate;
