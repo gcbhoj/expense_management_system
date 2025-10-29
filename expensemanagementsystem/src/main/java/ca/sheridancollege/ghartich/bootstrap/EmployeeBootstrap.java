@@ -43,7 +43,7 @@ public class EmployeeBootstrap implements CommandLineRunner {
 				.build();
 		Employee emp3 = Employee.builder()
 				.employeeName("Jane Smith")
-				.role(Role.ADMIN)
+				.role(Role.EMPLOYEE)
 				.expenses(new ArrayList<Expenses>())
 				.build();
 		
