@@ -1,11 +1,8 @@
 from flask import Flask
-from datetime import datetime
-
+from controllers.read_receipt import receipt_read
 app = Flask(__name__)
 
-@app.route('/')
-def home():
-    return "Welcome to the Expense Management System!"
+app.register_blueprint(receipt_read)
 
 
 

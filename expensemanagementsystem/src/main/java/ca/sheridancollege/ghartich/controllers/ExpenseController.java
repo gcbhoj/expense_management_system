@@ -29,6 +29,7 @@ public class ExpenseController {
 	
 	private final EmployeeRepository employeeRepo;
 	private final ExpenseRepository expenseRepo;
+	private final String PYTHON_SERVICES = "http://localhost:5001/api/py/";
 	
 	
 	@GetMapping
