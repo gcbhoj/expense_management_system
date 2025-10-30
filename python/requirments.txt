@@ -1,1 +1,4 @@
 Flask
+img2pdf
+pypdf2
+image-text-reader
