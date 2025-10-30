@@ -3,3 +3,9 @@ img2pdf
 pypdf2
 image-text-reader
 receiptparser
+tesseract
+munch
+wand
+python-dateutil
+
+
