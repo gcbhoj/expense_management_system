@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 
 import ca.sheridancollege.ghartich.beans.ApprovalStatus;
 import ca.sheridancollege.ghartich.beans.Employee;
+import ca.sheridancollege.ghartich.beans.EmployeeRole;
 import ca.sheridancollege.ghartich.beans.Expenses;
-import ca.sheridancollege.ghartich.beans.Role;
 import ca.sheridancollege.ghartich.repository.EmployeeRepository;
 import ca.sheridancollege.ghartich.repository.ExpenseRepository;
 import jakarta.persistence.Persistence;
@@ -33,23 +33,23 @@ public class EmployeeBootstrap implements CommandLineRunner {
 		
 		Employee emp1 = Employee.builder()
 				.employeeName("John Doe")
-				.role(Role.ADMIN)
+				.role(EmployeeRole.ADMIN)
 				.expenses(new ArrayList<Expenses>())
 				.build();
 		Employee emp2 = Employee.builder()
 				.employeeName("Jack Rack")
-				.role(Role.MANAGER)
+				.role(EmployeeRole.MANAGER)
 				.expenses(new ArrayList<Expenses>())
 				.build();
 		Employee emp3 = Employee.builder()
 				.employeeName("Jane Smith")
-				.role(Role.EMPLOYEE)
+				.role(EmployeeRole.EMPLOYEE)
 				.expenses(new ArrayList<Expenses>())
 				.build();
 		
 		
 		Expenses exp1 = Expenses.builder()
-			    .expenseType("Office Supplies")
+			    .expenseTitle("Office Supplies")
 			    .expenseDescription("Printer ink and stationery")
 			    .expenseDate(LocalDate.now().minusDays(1))
 			    .expenseAmount(200.20)
@@ -57,7 +57,7 @@ public class EmployeeBootstrap implements CommandLineRunner {
 			    .storageId("ST001")
 			    .build();
 		Expenses exp2 = Expenses.builder()
-			    .expenseType("Travel Expenses")
+			    .expenseTitle("Travel Expenses")
 			    .expenseDescription("Flight to Ottawa for client meeting")
 			    .expenseDate(LocalDate.now().minusMonths(1))
 			    .expenseAmount(2000.20)
@@ -65,7 +65,7 @@ public class EmployeeBootstrap implements CommandLineRunner {
 			    .storageId("ST002")
 			    .build();
 		Expenses exp3 = Expenses.builder()
-			    .expenseType("Accommodation")
+			    .expenseTitle("Accommodation")
 			    .expenseDescription("Hotel stay for business trip")
 			    .expenseDate(LocalDate.now().minusMonths(1))
 			    .expenseAmount(2000.20)
@@ -73,7 +73,7 @@ public class EmployeeBootstrap implements CommandLineRunner {
 			    .storageId("ST003")
 			    .build();
 		Expenses exp4 = Expenses.builder()
-			    .expenseType("Training Fees")
+			    .expenseTitle("Training Fees")
 			    .expenseDescription("Online professional development course")
 			    .expenseDate(LocalDate.now().minusMonths(2))
 			    .expenseAmount(2000.20)

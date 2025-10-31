@@ -54,13 +54,13 @@ def extract_item_lines(text):
     return items
 
 # the following function extracts all the details from the receipt
-def read_receipt_jpg():
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    image_path = os.path.join(BASE_DIR, "receipt.jpg")
+def read_receipt_jpg(file_path):
+    # BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    # image_path = os.path.join(BASE_DIR, "receipt.jpg")
 
     tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
-    extracted_text = ocr_image(image_path, tesseract_cmd=tesseract_cmd)
+    extracted_text = ocr_image(file_path, tesseract_cmd=tesseract_cmd)
     extracted_text_cln = re.sub(r'\s+', ' ', extracted_text).strip()  
 
     # Get item lines
