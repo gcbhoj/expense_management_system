@@ -25,7 +25,7 @@ public class Expenses {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long expenseId;
 	@NonNull
-	private String expenseType;
+	private String expenseTitle;
 	@NonNull
 	private String expenseDescription;
 	@NonNull

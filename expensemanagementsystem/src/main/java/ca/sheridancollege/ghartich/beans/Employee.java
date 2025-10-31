@@ -29,7 +29,7 @@ public class Employee {
 	private String employeeName;
 	@NonNull
 	@Enumerated(EnumType.STRING)
-	private Role role;
+	private EmployeeRole role;
 	@OneToMany(fetch = FetchType.LAZY)
 	private List<Expenses> expenses;
 

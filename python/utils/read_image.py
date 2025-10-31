@@ -26,7 +26,7 @@ def ocr_image(image_path, tesseract_cmd=None):
     text = pytesseract.image_to_string(image, lang='eng')
     return text
 
-# the following function extracts the total amount from the receipt and sents it to the main java controller
+# the following function extracts the total amount from the receipt and sents it to the controller
 def extract_total_expense():
 
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
