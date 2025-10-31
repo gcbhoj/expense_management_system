@@ -1,19 +1,23 @@
 package ca.sheridancollege.ghartich.controllers;
 
 
+import java.io.File;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
-
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,8 +32,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ca.sheridancollege.ghartich.beans.Employee;
 import ca.sheridancollege.ghartich.beans.EmployeeRole;
+import ca.sheridancollege.ghartich.beans.ExpenseItems;
+import ca.sheridancollege.ghartich.beans.ExpenseList;
 import ca.sheridancollege.ghartich.beans.Expenses;
 import ca.sheridancollege.ghartich.repository.EmployeeRepository;
+import ca.sheridancollege.ghartich.repository.ExpenseItemsRepository;
+import ca.sheridancollege.ghartich.repository.ExpenseListRepository;
 import ca.sheridancollege.ghartich.repository.ExpenseRepository;
 import lombok.AllArgsConstructor;
 
@@ -41,6 +49,10 @@ public class ExpenseController {
 	
 	private final EmployeeRepository employeeRepo;
 	private final ExpenseRepository expenseRepo;
+	private final ExpenseListRepository expenseListRepo;
+	private final ExpenseItemsRepository expenseItemsRepo;
+	
+	
 	private final String PYTHON_SERVICES = "http://localhost:5001/api/py/";
 	
 	
@@ -130,20 +142,111 @@ public class ExpenseController {
 			
 			// use try catch method to call python API to extract receipt details
 			
+			double extractedTotalAmount = 0;
+			List<ExpenseItems> expenseItems = new ArrayList<>();
+			
+			
+			// Creating a new Temp file to store the file instance
+			File tempFile = File.createTempFile(employee.getEmployeeName(),"_"+ file.getOriginalFilename());
+			file.transferTo(tempFile);
+			
 			try {
 				
+				// creating http headers
+				HttpHeaders headers = new HttpHeaders();
+				headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+				
+				MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+				body.add("file", new FileSystemResource(tempFile));
+				
+				HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body,headers);
+				
+				
+				RestTemplate restTemplate = new RestTemplate();
+				
+				ResponseEntity<String> response;
+
+				if (!isPDF) {
+				    // For image files (JPG, PNG, etc.)
+				    response = restTemplate.postForEntity(PYTHON_SERVICES + "read_receipt_jpg", requestEntity, String.class);
+				} else {
+				    // For PDF files
+				    response = restTemplate.postForEntity(PYTHON_SERVICES + "read_receipt_pdf", requestEntity, String.class);
+				}
+				
+	            // Handle response
+	            if (response == null || response.getBody() == null) {
+	                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+	                        .body(Map.of("status", 400, "message", "No response from Python service"));
+	            }
+	            
+	            // unwrapping the response from python service
+	            JsonNode jsonNode = mapper.readTree(response.getBody());
+	            JsonNode receiptData = jsonNode.path("receipt_data"); // go into nested object
+
+	            extractedTotalAmount = receiptData.path("total_amount").asDouble();
+	            
+	            // checking for null total from reading receipt
+	            if(extractedTotalAmount <= 0) {
+	            	return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+	            			.body(Map.of("status",400,"message","Unable to retreive total amount from receipt"));
+	            		            	
+	            }
+	            JsonNode items = receiptData.path("items");
+	            
+	            if(items.isEmpty()) {
+	            	return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+	            			.body(Map.of("status",400,"message","Unable to retreive receipt details from receipt"));
+	            }
+	            
+	            // iterating through the items and adding to the expenseItems
+	            for(JsonNode itemNode:items) {
+	                ExpenseItems expenseItem = ExpenseItems.builder()
+	                        .expenseItemName(itemNode.path("item").asText())
+	                        .expenseItemCost(itemNode.path("amount").asDouble()) // make sure your POJO uses double
+	                        .build();
+	                expenseItems.add(expenseItem);
+	            }			
 			}catch(Exception e) {
 				e.printStackTrace();
 	    		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 				.body(Map.of("status",500,
-						"message","Please try again Later."));
-				
+						"message","Please try again Later."));			
 			}
 			
-    
-            
+			// validating the user entered total expense amount and the total amount received from reading the receipt
+			
+			if(extractedTotalAmount != expense.getExpenseAmount()) {
+				return ResponseEntity.status(HttpStatus.CONFLICT)
+						.body(Map.of("status", 400, "message", "Receipt Total & Entered Total Does Not Match"));
+			}
+			
+			//saving expense item repo			
+			expenseItemsRepo.saveAll(expenseItems);
+			
+			// Building Expense list			
+			ExpenseList expenseList = ExpenseList.builder()
+					.expenseItems(expenseItems)
+					.receivedTotalAmount(extractedTotalAmount)
+					.build();
+			
+			//saving expense list to repository
+			
+			expenseList = expenseListRepo.save(expenseList);
+			
+			//Linking expense to expense list
+			expense.setExpenseList(expenseList);
+			
+			// saving expenses
+			expense.setStorageId(tempFile.getName());
+			expenseRepo.save(expense);
+			
+			//Linking expense to employee
+			employee.getExpenses().add(expense);
+			employeeRepo.save(employee);           
 
-
+			// delteing the tempfile at the end
+            tempFile.delete();
 
             return ResponseEntity.status(HttpStatus.CREATED)
     				.body(Map.of("status",200,
@@ -164,135 +267,6 @@ public class ExpenseController {
 	public List<Employee> getAllEmployee(){
 		
 		return employeeRepo.findAll();
-	}
-	/*
-	 * Saving new expenses to employee
-	 * */
-//	@PostMapping(consumes = "application/json", value = "{employeeId}")
-	@PostMapping(consumes = "multipart/form-data", value = "{employeeId}")
-	public ResponseEntity<?> saveNewExpense(
-			@RequestPart("expense") Expenses expenses,
-			@RequestPart("file") MultipartFile file,
-			@PathVariable Long employeeId) {
-		try {
-			Optional<Employee> optionalEmployee = employeeRepo.findById(employeeId);
-			
-			if(optionalEmployee.isEmpty()) {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND)
-						.body(Map.of("status",404,
-								"message","Employee Not Found"));
-				
-			}
-			if(file.isEmpty()) {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-						.body(Map.of("status",404,"message","Receipt is not uploaded"));
-			}
-			
-			String originalFileName = file.getOriginalFilename();
-			boolean isImage = imageFile(originalFileName);
-			boolean isPDF = imageFile(originalFileName);
-			
-			if(!isImage && ! isPDF) {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-						.body(Map.of("stauts",403,"message","Uploaded file not supported. Upload either Jpg or PDF file."));
-			}
-			
-			
-			Employee employee = optionalEmployee.get();
-			
-//			if(employee.getRole() ==  EmployeeRole.EMPLOYEE) {
-//				return ResponseEntity.status(HttpStatus.FORBIDDEN)
-//						.body(Map.of("status",403,
-//								"message","Employee Does not have permission to claim Expenses"));
-//			}
-			
-			// checking for null values in expenses
-			
-			if(expenses.getExpenseTitle() == null || expenses.getExpenseTitle().isBlank()) {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-						.body(Map.of("status",403,
-								"message","Expense type cannot be empty"));
-				
-			}
-			if(expenses.getExpenseDescription() == null || expenses.getExpenseDescription().isBlank()) {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-						.body(Map.of("status",403,
-								"message","Expense Description cannot be empty"));
-			}
-			
-			if(expenses.getExpenseDate() ==  null) {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-						.body(Map.of("status",400,
-								"message","Expense Date cannot be empty"));
-			}
-			
-			if(expenses.getExpenseDate().isEqual(LocalDate.now())) {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-						.body(Map.of("status",400,
-								"message","Expense Date can"));
-				
-			}
-			
-			if(expenses.getExpenseAmount() <= 0) {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-						.body(Map.of("status",403,
-								"message","Please Enter a valid Amount"));
-				
-			}
-		
-
-			
-			
-			
-			// calling python API ENDPOINT to read the recepit and print the total amount
-			 double pyExpenseAmount = 0;
-			try {
-			
-			RestTemplate restTemplate= new RestTemplate();
-			String result = restTemplate.getForObject(PYTHON_SERVICES+"read_receipt_jpg", String.class);
-			System.out.println(result);
-			
-			ObjectMapper mapper = new ObjectMapper();
-			JsonNode node = mapper.readTree(result);
-			pyExpenseAmount = node.path("total_amount").asDouble(0.0);
-			System.out.println(pyExpenseAmount);
-			
-			}catch(Exception e){
-				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-						.body(Map.of("status",500,
-								"message","Error Calling Python service"));
-				
-			}
-			if(expenses.getExpenseAmount() != pyExpenseAmount) {
-				return ResponseEntity.status(HttpStatus.CONFLICT)
-						.body(Map.of("status",409,
-								"message","Entered Amount and the Receipt Amount Does not Match"));
-				
-			}
-			
-			// receive response from python and move forward with saving the expenses
-			
-			
-			expenses = expenseRepo.save(expenses);
-			
-			employee.getExpenses().add(expenses);
-			
-			employeeRepo.save(employee);
-			
-			
-			return ResponseEntity.status(HttpStatus.CREATED)
-					.body(Map.of("status",200,
-							"message","Expense Saved Sucessfully", 
-							"employeeId",employee.getEmployeeId()));
-			
-			
-		}catch(Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.body(Map.of("status",500,"message","Please try again later."));
-		}
-		
-		
-		
 	}
 	
 	private boolean imageFile(String str) {

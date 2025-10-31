@@ -2,6 +2,8 @@ import pytesseract
 from PIL import Image, ImageFilter, ImageEnhance,ImageOps
 import re
 import os 
+from flask import jsonify
+
 # //processsing the image
 def preprocess_image(image_path):
     # Convert to grayscale
@@ -69,6 +71,17 @@ def read_receipt_jpg(file_path):
     # Get total amount
     total_expense_match = re.search(r'total[:\s]*\$?(\d+\.\d{2})', extracted_text_cln, re.IGNORECASE)
     total_amount = float(total_expense_match.group(1)) if total_expense_match else None
+    
+    # If still not found, return a 400 response
+    if total_amount is None or total_amount <= 0:
+        return jsonify({
+            "status": 400,
+            "message": "Total amount not found or invalid in the receipt.",
+            "data": None
+        }), 400
+        # Fallback: Try to find the largest amount as total
+    amounts = [item['amount'] for item in items]
+    total_amount = max(amounts) if amounts else None
 
     # Build JSON-serializable dictionary
     receipt_data = {

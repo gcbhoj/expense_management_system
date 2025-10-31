@@ -26,9 +26,26 @@ def get_receipt_information():
         return jsonify({'error': 'Total amount not found in the receipt.'}), 404
 
 # the following API provides all the details of the receipt that is in pdf format
-@receipt_read_pdf.route('/api/py/read_receipt_pdf', methods=['GET'])
+@receipt_read_pdf.route('/api/py/read_receipt_pdf', methods=['POST'])
 def get_receipt_information_pdf():
-    receipt_json = get_receipt_data()
+    
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file part in the request'}), 400
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+    
+        # Define your upload folder
+    UPLOAD_FOLDER = 'uploads'
+    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+    # Save file to uploads directory (same filename)
+    filepath = os.path.join(UPLOAD_FOLDER, file.filename)
+    file.save(filepath)
+    
+    receipt_json = get_receipt_data(filepath)
+    
+    
     return jsonify({'receipt_data': receipt_json}), 200
 
 # the following API provides all the details of the receipt that is in jpg format
