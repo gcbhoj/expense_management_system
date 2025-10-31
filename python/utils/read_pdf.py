@@ -2,6 +2,7 @@ from PyPDF2 import PdfReader
 import re
 import json
 import os
+from flask import jsonify
 
 def clean_text(text):
     text = text.replace("<A>", "")
@@ -39,11 +40,11 @@ def extract_total(text):
 
 
 # ---- Main Section ----
-def get_receipt_data():
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    pdf_path = os.path.join(BASE_DIR, "ereceipt.pdf")
+def get_receipt_data(file_path):
+    # BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    # pdf_path = os.path.join(BASE_DIR, "ereceipt.pdf")
 
-    with open(pdf_path, "rb") as file:
+    with open(file_path, "rb") as file:
         reader = PdfReader(file)
         number_of_pages = len(reader.pages)
         print(f"Number of pages: {number_of_pages}")
@@ -59,6 +60,13 @@ def get_receipt_data():
 
     # Extract total
     total_amount = extract_total(all_text)
+        # If still not found, return a 400 response
+    if total_amount is None or total_amount <= 0:
+        return jsonify({
+            "status": 400,
+            "message": "Total amount not found or invalid in the receipt.",
+            "data": None
+        }), 400
 
     # Build JSON
     receipt_data = {

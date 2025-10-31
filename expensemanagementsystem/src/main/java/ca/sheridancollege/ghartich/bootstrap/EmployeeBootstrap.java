@@ -9,8 +9,12 @@ import org.springframework.stereotype.Component;
 import ca.sheridancollege.ghartich.beans.ApprovalStatus;
 import ca.sheridancollege.ghartich.beans.Employee;
 import ca.sheridancollege.ghartich.beans.EmployeeRole;
+import ca.sheridancollege.ghartich.beans.ExpenseItems;
+import ca.sheridancollege.ghartich.beans.ExpenseList;
 import ca.sheridancollege.ghartich.beans.Expenses;
 import ca.sheridancollege.ghartich.repository.EmployeeRepository;
+import ca.sheridancollege.ghartich.repository.ExpenseItemsRepository;
+import ca.sheridancollege.ghartich.repository.ExpenseListRepository;
 import ca.sheridancollege.ghartich.repository.ExpenseRepository;
 import jakarta.persistence.Persistence;
 import jakarta.persistence.PersistenceUtil;
@@ -22,14 +26,12 @@ public class EmployeeBootstrap implements CommandLineRunner {
 	
 	private final EmployeeRepository employeeRepo;
 	private final ExpenseRepository expenseRepo;
+	private final ExpenseListRepository expenseListRepo;
+	private final ExpenseItemsRepository expenseItemsRepo;
 	
 	@Override
 	public void run(String... arg) throws Exception{
 		
-//		Employee emp1 = new Employee (null,"John Doe",Role.EMPLOYEE,null);
-//		Employee emp2 = new Employee(null,"Jack Rack",Role.ADMIN,null);
-//		Employee emp3 = new Employee(null,"Jane Smith",Role.MANAGER,null);
-
 		
 		Employee emp1 = Employee.builder()
 				.employeeName("John Doe")
@@ -48,6 +50,25 @@ public class EmployeeBootstrap implements CommandLineRunner {
 				.build();
 		
 		
+
+
+
+
+		
+		ExpenseItems expItems1 =  ExpenseItems.builder()
+				.expenseItemName("Office Supplies")
+				.expenseItemCost(200.20)
+				.build();
+		
+		expItems1 =  expenseItemsRepo.save(expItems1);
+		
+		ExpenseList expList1 = ExpenseList.builder()
+				.expenseItems(new ArrayList<>())
+				.receivedTotalAmount(200.20)
+				.build();
+		expList1.getExpenseItems().add(expItems1);
+		expList1 = expenseListRepo.save(expList1);
+		
 		Expenses exp1 = Expenses.builder()
 			    .expenseTitle("Office Supplies")
 			    .expenseDescription("Printer ink and stationery")
@@ -55,7 +76,23 @@ public class EmployeeBootstrap implements CommandLineRunner {
 			    .expenseAmount(200.20)
 			    .approvalStatus(ApprovalStatus.PENDING)
 			    .storageId("ST001")
+			    .expenseList(expList1)
 			    .build();
+		
+		ExpenseItems expItems2 =  ExpenseItems.builder()
+				.expenseItemName("Travel Expenses")
+				.expenseItemCost(200.20)
+				.build();
+		
+		expItems2 =  expenseItemsRepo.save(expItems2);
+		
+		ExpenseList expList2 = ExpenseList.builder()
+				.expenseItems(new ArrayList<>())
+				.receivedTotalAmount(200.20)
+				.build();
+		expList2.getExpenseItems().add(expItems2);
+		expList2 = expenseListRepo.save(expList2);
+		
 		Expenses exp2 = Expenses.builder()
 			    .expenseTitle("Travel Expenses")
 			    .expenseDescription("Flight to Ottawa for client meeting")
@@ -63,23 +100,62 @@ public class EmployeeBootstrap implements CommandLineRunner {
 			    .expenseAmount(2000.20)
 			    .approvalStatus(ApprovalStatus.PENDING)
 			    .storageId("ST002")
+			    .expenseList(expList2)
 			    .build();
+		
+		ExpenseItems expItems3 =  ExpenseItems.builder()
+				.expenseItemName("Accommodation")
+				.expenseItemCost(2000.00)
+				.build();
+		
+		expItems3 =  expenseItemsRepo.save(expItems3);
+		
+		ExpenseList expList3 = ExpenseList.builder()
+				.expenseItems(new ArrayList<>())
+				.receivedTotalAmount(200.20)
+				.build();
+		expList3.getExpenseItems().add(expItems3);
+		expList3= expenseListRepo.save(expList3);
+		
 		Expenses exp3 = Expenses.builder()
 			    .expenseTitle("Accommodation")
 			    .expenseDescription("Hotel stay for business trip")
 			    .expenseDate(LocalDate.now().minusMonths(1))
-			    .expenseAmount(2000.20)
+			    .expenseAmount(2000.00)
 			    .approvalStatus(ApprovalStatus.APPROVED)
 			    .storageId("ST003")
+			    .expenseList(expList3)
 			    .build();
+		
+		ExpenseItems expItems4 =  ExpenseItems.builder()
+				.expenseItemName("Accommodation")
+				.expenseItemCost(2000.00)
+				.build();
+		
+		expItems4 =  expenseItemsRepo.save(expItems4);
+		
+		ExpenseList expList4 = ExpenseList.builder()
+				.expenseItems(new ArrayList<>())
+				.receivedTotalAmount(200.20)
+				.build();
+		expList4.getExpenseItems().add(expItems4);
+		expList4= expenseListRepo.save(expList4);
+		
 		Expenses exp4 = Expenses.builder()
 			    .expenseTitle("Training Fees")
 			    .expenseDescription("Online professional development course")
 			    .expenseDate(LocalDate.now().minusMonths(2))
-			    .expenseAmount(2000.20)
+			    .expenseAmount(1000.20)
 			    .approvalStatus(ApprovalStatus.REJECTED)
 			    .storageId("ST004")
+			    .expenseList(expList4)
 			    .build();
+		
+		
+		
+		
+		
+		
 		
 		exp1 = expenseRepo.save(exp1);
 		exp2 = expenseRepo.save(exp2);
