@@ -5,12 +5,17 @@ import java.time.LocalDate;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,10 +39,11 @@ public class Expenses{
 	@NonNull
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 	private LocalDate expenseDate;
-	@NonNull
+
 	private double expenseAmount;
 	
 	@Builder.Default
+	@Enumerated(EnumType.STRING)
 	private ApprovalStatus approvalStatus = ApprovalStatus.PENDING;
 	
 //	@NonNull
@@ -49,10 +55,16 @@ public class Expenses{
 	private ExpenseList expenseList;
 	
 	@Builder.Default
+	@Enumerated(EnumType.STRING)
 	private ApplicationStatus applicationStatus = ApplicationStatus.SAVED;
 	
 	private Date approvedDate;
 	private String approvedBy;
+	
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_Id")
+    @JsonBackReference
+    private Employee employee;
 	
 	
 	

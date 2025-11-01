@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import ca.sheridancollege.ghartich.beans.ApplicationStatus;
 import ca.sheridancollege.ghartich.beans.ApprovalStatus;
 import ca.sheridancollege.ghartich.beans.Employee;
 import ca.sheridancollege.ghartich.beans.EmployeeRole;
@@ -75,6 +76,7 @@ public class EmployeeBootstrap implements CommandLineRunner {
 			    .expenseDate(LocalDate.now().minusDays(1))
 			    .expenseAmount(200.20)
 			    .approvalStatus(ApprovalStatus.PENDING)
+			    .applicationStatus(ApplicationStatus.SAVED)
 			    .storageId("ST001")
 			    .expenseList(expList1)
 			    .build();
@@ -99,6 +101,7 @@ public class EmployeeBootstrap implements CommandLineRunner {
 			    .expenseDate(LocalDate.now().minusMonths(1))
 			    .expenseAmount(2000.20)
 			    .approvalStatus(ApprovalStatus.PENDING)
+			    .applicationStatus(ApplicationStatus.SUBMITTED)
 			    .storageId("ST002")
 			    .expenseList(expList2)
 			    .build();
@@ -123,6 +126,7 @@ public class EmployeeBootstrap implements CommandLineRunner {
 			    .expenseDate(LocalDate.now().minusMonths(1))
 			    .expenseAmount(2000.00)
 			    .approvalStatus(ApprovalStatus.APPROVED)
+			    .applicationStatus(ApplicationStatus.SUBMITTED)
 			    .storageId("ST003")
 			    .expenseList(expList3)
 			    .build();
@@ -147,30 +151,37 @@ public class EmployeeBootstrap implements CommandLineRunner {
 			    .expenseDate(LocalDate.now().minusMonths(2))
 			    .expenseAmount(1000.20)
 			    .approvalStatus(ApprovalStatus.REJECTED)
+			    .applicationStatus(ApplicationStatus.SUBMITTED)
 			    .storageId("ST004")
 			    .expenseList(expList4)
 			    .build();
 		
 		
 		
+		employeeRepo.save(emp1);
+		employeeRepo.save(emp2);
+		employeeRepo.save(emp3);
 		
-		
-		
+		exp1.setEmployee(emp1);
+		exp2.setEmployee(emp2);
+		exp3.setEmployee(emp2);
+		exp4.setEmployee(emp2);
 		
 		exp1 = expenseRepo.save(exp1);
 		exp2 = expenseRepo.save(exp2);
 		exp3 = expenseRepo.save(exp3);
 		exp4 = expenseRepo.save(exp4);
 		
+		
+		
 		 emp1.getExpenses().add(exp1);
 		 emp2.getExpenses().add(exp2);
 		 emp2.getExpenses().add(exp3);
 		 emp2.getExpenses().add(exp4);
 		 
-		
-		employeeRepo.save(emp1);
-		employeeRepo.save(emp2);
-		employeeRepo.save(emp3);
+		 employeeRepo.save(emp1);
+		 employeeRepo.save(emp2);
+
 		
 		
 		PersistenceUtil pu = Persistence.getPersistenceUtil();
