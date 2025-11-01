@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +31,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import ca.sheridancollege.ghartich.beans.ApplicationStatus;
+import ca.sheridancollege.ghartich.beans.ApprovalStatus;
 import ca.sheridancollege.ghartich.beans.Employee;
 import ca.sheridancollege.ghartich.beans.EmployeeRole;
 import ca.sheridancollege.ghartich.beans.ExpenseItems;
@@ -55,6 +58,17 @@ public class ExpenseController {
 	
 	private final String PYTHON_SERVICES = "http://localhost:5001/api/py/";
 	
+	/*
+	 * @param Bhoj GC
+	 * the claim new expenses method expects two pars one is the file part which can be either jpg or pdf and then expense data
+	 * Process Flow:
+	 * - using object mapper to map our expenses entity to user input and checks for null values of both file and expenses
+	 * also for file types and returns responses accordingly
+	 * - checks if the role of the employee permits to claim expenses 
+	 * - if all the data is as expected calls the post method in our python to get the receipt details.
+	 *  - receives the receipt details from python and stores them to the database.
+	 * 
+	 * */
 	
     @PostMapping(value = "/claimExpenses/{employeeId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> claimNewExpense(
@@ -236,6 +250,7 @@ public class ExpenseController {
 			
 			//Linking expense to expense list
 			expense.setExpenseList(expenseList);
+			expense.setEmployee(employee);
 			
 			// saving expenses
 			expense.setStorageId(tempFile.getName());
@@ -261,13 +276,224 @@ public class ExpenseController {
     	}
 
     }
+/*
+ *  @param Bhoj GC
+ *  
+ *  get approved by employee end point retrieves all the expenses that has been previous approved.
+ *  
+ *  process flow:
+ *  - checks if the employee id is not null
+ *   - checks if the employee exists
+ *   - if ok then retrieves expenses that has been approved.
+ *   - if the retrieved list it empty then sends a response of empty list.
+ *  
+ * */	
+	@GetMapping(value= "/approved/{employeeId}")
+	public ResponseEntity<?> getApprovedByEmployee(@PathVariable Long employeeId){
+		try {
+			
+		if(employeeId == null) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(Map.of("status",400,"message","EmployeeId is Required"));
+		}
+		
+		Optional<Employee> employee = employeeRepo.findById(employeeId);
+		
+		if(employee.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(Map.of("status",400,"message","Employee Not Found"));
+		}
+		
+	     List<Expenses> approvedExpenses = expenseRepo.findByEmployeeEmployeeIdAndApprovalStatus(
+	    		 employeeId, 
+	    		 ApprovalStatus.APPROVED);
+	     
+	     if(approvedExpenses.isEmpty()) {
+	    	 return ResponseEntity.status(HttpStatus.NOT_FOUND)
+	    			 .body(Map.of("status",404,"message","List is Empty"));
+	     }
+	     
+	     return ResponseEntity.status(HttpStatus.FOUND)
+	    		 .body(Map.of("status",302,"message", approvedExpenses));
+		
+			
+		}catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+    				.body(Map.of("status",500,
+    						"message","Please try again later."));
+        }
+	}
 
+	/*
+	 *  @param Bhoj GC
+	 *  
+	 *  get pending by employee end point retrieves all the expenses that are pending.
+	 *  
+	 *  process flow:
+	 *  - checks if the employee id is not null
+	 *   - checks if the employee exists
+	 *   - if ok then retrieves expenses that are pending.
+	 *   - if the retrieved list it empty then sends a response of empty list.
+	 *  
+	 * */		
+	
+	@GetMapping(value ="/pending/{employeeId}")
+	public ResponseEntity<?> getPendingByEmployee(@PathVariable Long employeeId){
+		
+		try {
+			if(employeeId == null) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body(Map.of("status",400,"message","EmployeeId is Required"));
+			}
+			
+			Optional<Employee> employee = employeeRepo.findById(employeeId);
+			
+			if(employee.isEmpty()) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body(Map.of("status",400,"message","Employee Not Found"));
+			}
+			
+		     List<Expenses> pendingExpenses = expenseRepo.findByEmployeeEmployeeIdAndApprovalStatus(
+		    		 employeeId, 
+		    		 ApprovalStatus.PENDING);
+		     
+		     if(pendingExpenses.isEmpty()) {
+		    	 return ResponseEntity.status(HttpStatus.NOT_FOUND)
+		    			 .body(Map.of("status",404,"message","List is Empty"));
+		     }
+		     
+		     return ResponseEntity.status(HttpStatus.FOUND)
+		    		 .body(Map.of("status",302,"message", pendingExpenses));
+			
+			
+		}catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(Map.of("status",500,"message","Please try again later"));
+		}
+
+	}
+	/*
+	 *  @param Bhoj GC
+	 *  
+	 *  get saved by employee end point retrieves all the expenses that are saved and pending submission.
+	 *  
+	 *  process flow:
+	 *  - checks if the employee id is not null
+	 *   - checks if the employee exists
+	 *   - if ok then retrieves expenses that are pending.
+	 *   - if the retrieved list it empty then sends a response of empty list.
+	 *  
+	 * */
+	@GetMapping(value = "/saved/{employeeId}")
+	public ResponseEntity <?> getSavedExpenses(@PathVariable Long employeeId){
+		try {
+			
+			if(employeeId == null) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body(Map.of("status",400,"message","EmployeeId is Required"));
+			}
+			
+		     List<Expenses> savedExpenses = expenseRepo.findByEmployeeEmployeeIdAndApplicationStatus(
+		    		 employeeId, 
+		    		 ApplicationStatus.SAVED);
+		     
+		     if(savedExpenses.isEmpty()) {
+		    	 return ResponseEntity.status(HttpStatus.NOT_FOUND)
+		    			 .body(Map.of("status",404,"message","No saved Expenses"));
+		     }
+		     
+		     return ResponseEntity.status(HttpStatus.FOUND)
+		    		 .body(Map.of("status",302,"message", savedExpenses));
+		     
+			
+		}catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(Map.of("status",500,"message","Please try again later"));
+		}
+		
+	}
+	
+	/*
+	 *  @param Bhoj GC
+	 *  
+	 *  submitting the saved application
+	 *  
+	 *  process flow:
+	 *  - checks if the employee id is not null
+	 *  - checks if the expense id is not null
+	 *  - checks if the expense has already been approved
+	 *  - checks if the application is already submitted
+	 *  - if every thing is fine thent he status is changed to submitted
+	 *  
+	 * */
+	
+	@PatchMapping(value ="/submit/{employeeId}/{expenseId}")
+	public ResponseEntity <?> submitExpenses(@PathVariable Long employeeId, @PathVariable Long expenseId){
+		try {
+			
+			if(employeeId == null) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body(Map.of("status",400,"message","Employeed Id is missing"));
+			}
+			
+			if(expenseId ==  null) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body(Map.of("status",400,"message","Expense Id is missing"));
+			}
+			
+			Optional<Employee> optionalEmployee = employeeRepo.findById(employeeId);
+			
+			if(optionalEmployee.isEmpty()) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND)
+						.body(Map.of("status",404,"message","Employee Not Found"));
+			}
+			
+			Optional <Expenses> optionalExpense = expenseRepo.findById(expenseId);
+			
+			if(optionalExpense.isEmpty()) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND)
+						.body(Map.of("status",404,"message","No Expenses Found"));
+			}
+			
+			Expenses expense = optionalExpense.get();
+			
+			if(!expense.getEmployee().getEmployeeId().equals(employeeId)) {
+				return ResponseEntity.status(HttpStatus.FORBIDDEN)
+						.body(Map.of("status",403,"message","Expense does not belong to the employee"));
+				
+			}
+			
+			if(!expense.getApprovalStatus().equals(ApprovalStatus.PENDING)) {
+				return ResponseEntity.status(HttpStatus.CONFLICT)
+						.body(Map.of("status",409,"message","Only Pending Application can be submitted"));
+			}
+			
+			if(expense.getApplicationStatus().equals(ApplicationStatus.SUBMITTED)) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body(Map.of("status",400,"message","Receipt already submitted"));
+			}
+			
+			expense.setApplicationStatus(ApplicationStatus.SUBMITTED);
+			expenseRepo.save(expense);
+			
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(Map.of("status",200,"message","Receipt Submitted sucessfully"));
+			
+			
+			
+		}catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(Map.of("status",500,"message","Please try again later"));
+		}
+		
+	}
 	
 	@GetMapping
 	public List<Employee> getAllEmployee(){
 		
 		return employeeRepo.findAll();
 	}
+	
 	
 	private boolean imageFile(String str) {
 		 // Regex to check valid image file extension.

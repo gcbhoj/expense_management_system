@@ -2,6 +2,8 @@ package ca.sheridancollege.ghartich.beans;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -31,6 +33,7 @@ public class Employee {
 	@Enumerated(EnumType.STRING)
 	private EmployeeRole role;
 	@OneToMany(fetch = FetchType.LAZY)
+	@JsonManagedReference
 	private List<Expenses> expenses;
 
 }
