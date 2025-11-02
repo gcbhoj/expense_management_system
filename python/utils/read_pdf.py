@@ -38,6 +38,25 @@ def extract_total(text):
         return float(match.group(1))
     return None
 
+def extract_total_amount(text):
+    """
+    Extract total amount explicitly, ignoring subtotal or tax.
+    """
+    # Normalize text
+    lines = text.splitlines()
+    total_amount = None
+    
+    for line in lines:
+        line_lower = line.lower()
+        if "total" in line_lower and not any(skip in line_lower for skip in ["subtotal", "tax", "hst", "gst"]):
+            # Find the first number that looks like a price
+            match = re.search(r"\$?(\d+\.\d{2})", line)
+            if match:
+                total_amount = float(match.group(1))
+                break
+
+    return total_amount
+
 
 # ---- Main Section ----
 def get_receipt_data(file_path):
@@ -59,7 +78,7 @@ def get_receipt_data(file_path):
             all_items.extend(items)
 
     # Extract total
-    total_amount = extract_total(all_text)
+    total_amount = extract_total_amount(all_text)
         # If still not found, return a 400 response
     if total_amount is None or total_amount <= 0:
         return jsonify({

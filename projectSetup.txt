@@ -1,0 +1,12 @@
+To set up the project follow following steps
+
+1. Clone or Unzip the project
+2. cd expense_management_system
+3. npm install
+4. cd python
+5. Download and install https://github.com/UB-Mannheim/tesseract/wiki for windows
+6. set up python virual environmet to run python program
+    -   Create a virtual environment for python: python -m venv .venv
+    -   Activating python virtual environment : .venv\Scripts\activate
+    -   pip install requirments.txt
+7. run python server.py will run the python backend at port 5001 
