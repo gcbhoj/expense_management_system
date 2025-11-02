@@ -7,5 +7,6 @@ tesseract
 munch
 wand
 python-dateutil
+reportlab
 
 

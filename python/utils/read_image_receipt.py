@@ -55,6 +55,26 @@ def extract_item_lines(text):
     
     return items
 
+def extract_total_amount(text):
+    """
+    Extract total amount explicitly, ignoring subtotal or tax.
+    """
+    # Normalize text
+    lines = text.splitlines()
+    total_amount = None
+    
+    for line in lines:
+        line_lower = line.lower()
+        if "total" in line_lower and not any(skip in line_lower for skip in ["subtotal", "tax", "hst", "gst"]):
+            # Find the first number that looks like a price
+            match = re.search(r"\$?(\d+\.\d{2})", line)
+            if match:
+                total_amount = float(match.group(1))
+                break
+
+    return total_amount
+
+
 # the following function extracts all the details from the receipt
 def read_receipt_jpg(file_path):
     # BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -70,7 +90,9 @@ def read_receipt_jpg(file_path):
 
     # Get total amount
     total_expense_match = re.search(r'total[:\s]*\$?(\d+\.\d{2})', extracted_text_cln, re.IGNORECASE)
-    total_amount = float(total_expense_match.group(1)) if total_expense_match else None
+    # total_amount = float(total_expense_match) if total_expense_match else None
+    total_amount = extract_total_amount(extracted_text)
+
     
     # If still not found, return a 400 response
     if total_amount is None or total_amount <= 0:
@@ -79,9 +101,9 @@ def read_receipt_jpg(file_path):
             "message": "Total amount not found or invalid in the receipt.",
             "data": None
         }), 400
-        # Fallback: Try to find the largest amount as total
-    amounts = [item['amount'] for item in items]
-    total_amount = max(amounts) if amounts else None
+    #     # Fallback: Try to find the largest amount as total
+    # amounts = [item['amount'] for item in items]
+    # total_amount = max(amounts) if amounts else None
 
     # Build JSON-serializable dictionary
     receipt_data = {
