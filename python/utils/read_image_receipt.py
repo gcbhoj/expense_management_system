@@ -96,7 +96,7 @@ def read_receipt_jpg(file_path):
     
     # If still not found, return a 400 response
     if total_amount is None or total_amount <= 0:
-        return jsonify({
+        return({
             "status": 400,
             "message": "Total amount not found or invalid in the receipt.",
             "data": None

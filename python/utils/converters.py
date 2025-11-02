@@ -33,3 +33,5 @@ def convert_image_to_pdf(image_path,output_name=None):
         f.write(img2pdf.convert(image_path, layout_fun=layout_fun))
     
     return pdf_file
+
+

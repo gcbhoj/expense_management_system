@@ -8,5 +8,6 @@ munch
 wand
 python-dateutil
 reportlab
+pdf2image
 
 
