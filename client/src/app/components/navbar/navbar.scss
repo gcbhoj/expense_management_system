@@ -27,12 +27,42 @@
     color: #60a5fa !important;
     border: 1px solid #60a5fa;
     margin: 0 0.5rem;
+    white-space: nowrap;
 
     &:hover {
       background-color: #60a5fa;
       color: #000 !important;
       transform: translateY(-2px);
       box-shadow: 0 4px 12px rgba(96, 165, 250, 0.3);
+    }
+  }
+
+  // Admin buttons styling
+  .btn-outline-info,
+  .btn-info,
+  .btn-outline-danger {
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+    white-space: nowrap;
+    font-weight: 500;
+  }
+
+  .btn-outline-info {
+    border-color: #60a5fa;
+    color: #60a5fa;
+
+    &:hover {
+      background: #60a5fa;
+      color: #000;
+    }
+  }
+
+  .btn-info {
+    background: #60a5fa;
+    border: none;
+
+    &:hover {
+      background: #3b82f6;
     }
   }
 }

@@ -4,6 +4,9 @@ import re
 import os 
 from flask import jsonify
 
+# Configure Tesseract path for Windows
+pytesseract.pytesseract.tesseract_cmd = r'C:\Users\alena\AppData\Local\Programs\Tesseract-OCR\tesseract.exe'
+
 # //processsing the image
 def preprocess_image(image_path):
     # Convert to grayscale
@@ -60,7 +63,7 @@ def read_receipt_jpg(file_path):
     # BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     # image_path = os.path.join(BASE_DIR, "receipt.jpg")
 
-    tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+    tesseract_cmd = r"C:\Users\alena\AppData\Local\Programs\Tesseract-OCR\tesseract.exe"
 
     extracted_text = ocr_image(file_path, tesseract_cmd=tesseract_cmd)
     extracted_text_cln = re.sub(r'\s+', ' ', extracted_text).strip()  

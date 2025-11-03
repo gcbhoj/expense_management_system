@@ -13,6 +13,40 @@ body {
   color: #e5e7eb;
   line-height: 1.6;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Page transition animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
 }
 
 /* Scrollbar styling */
@@ -73,10 +107,132 @@ body {
 .form-floating > .form-control:-moz-placeholder,
 .form-floating > textarea.form-control::placeholder {
   color: transparent !important;
+  opacity: 0 !important;
 }
 
-/* Ensure label remains readable on dark background */
+/* Floating label improvements */
+.form-floating {
+  position: relative;
+}
+
 .form-floating > label {
-  padding-left: 0.75rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 1rem 0.75rem;
+  height: 100%;
+  pointer-events: none;
+  border: 1px solid transparent;
+  transform-origin: 0 0;
+  transition: opacity 0.1s ease-in-out, transform 0.1s ease-in-out;
+  color: #9ca3af !important;
   background: transparent;
+  z-index: 2;
+}
+
+/* Ensure input text is always visible and doesn't overlap with label */
+.form-floating > .form-control,
+.form-floating > .form-select {
+  height: calc(3.5rem + 2px);
+  min-height: calc(3.5rem + 2px);
+  line-height: 1.25;
+  padding: 1.625rem 0.75rem 0.625rem;
+}
+
+/* When input has focus or has content, move label up */
+.form-floating > .form-control:focus ~ label,
+.form-floating > .form-control:not(:placeholder-shown) ~ label,
+.form-floating > .form-select ~ label {
+  opacity: 0.65;
+  transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
+  color: #60a5fa !important;
+  padding-top: 0.25rem;
+}
+
+/* Ensure input text never overlaps with label */
+.form-floating > .form-control:not(:placeholder-shown),
+.form-floating > .form-control:focus {
+  padding-top: 1.625rem;
+  padding-bottom: 0.625rem;
+}
+
+/* Ensure proper spacing for form elements */
+.mb-3 {
+  margin-bottom: 1rem !important;
+}
+
+/* Fix button text wrapping */
+button, .btn {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: all 0.3s ease;
+}
+
+/* Enhanced button styles */
+.btn-primary {
+  background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+  border: none;
+  box-shadow: 0 4px 12px rgba(96, 165, 250, 0.3);
+  
+  &:hover {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(96, 165, 250, 0.5);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  border: none;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+
+  &:hover {
+    background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(34, 197, 94, 0.5);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  border: none;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+
+  &:hover {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+/* Ensure cards don't overlap */
+.card, [class*="card"] {
+  position: relative;
+  z-index: 1;
+}
+
+/* Fix z-index stacking issues */
+.navbar {
+  z-index: 1030;
+}
+
+.modal {
+  z-index: 1050;
+}
+
+.toast {
+  z-index: 1060;
 }

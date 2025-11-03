@@ -1,0 +1,155 @@
+<div class="admin-dashboard">
+  <!-- Header -->
+  <div class="dashboard-header">
+    <div class="container-fluid">
+      <div class="row align-items-center">
+        <div class="col">
+          <h1><i class="bi bi-speedometer2 me-2"></i>Admin Dashboard</h1>
+          <p class="mb-0">Welcome back, {{ adminName }}</p>
+        </div>
+        <div class="col-auto">
+          <button class="btn btn-outline-danger" (click)="logout()">
+            <i class="bi bi-box-arrow-right me-2"></i>Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="container-fluid mt-4">
+    <div class="row g-3">
+      <div class="col-md-4">
+        <div class="stat-card pending">
+          <div class="stat-icon">
+            <i class="bi bi-clock-history"></i>
+          </div>
+          <div class="stat-info">
+            <h3>{{ pendingExpenses.length }}</h3>
+            <p>Pending Approvals</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="stat-card approved">
+          <div class="stat-icon">
+            <i class="bi bi-check-circle"></i>
+          </div>
+          <div class="stat-info">
+            <h3>{{ approvedExpenses.length }}</h3>
+            <p>Approved</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="stat-card rejected">
+          <div class="stat-icon">
+            <i class="bi bi-x-circle"></i>
+          </div>
+          <div class="stat-info">
+            <h3>{{ rejectedExpenses.length }}</h3>
+            <p>Rejected</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="container-fluid mt-4">
+    <ul class="nav nav-tabs expense-tabs">
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          [class.active]="selectedTab === 'pending'"
+          (click)="selectTab('pending')"
+        >
+          <i class="bi bi-clock-history me-2"></i>
+          Pending ({{ pendingExpenses.length }})
+        </a>
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          [class.active]="selectedTab === 'approved'"
+          (click)="selectTab('approved')"
+        >
+          <i class="bi bi-check-circle me-2"></i>
+          Approved ({{ approvedExpenses.length }})
+        </a>
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          [class.active]="selectedTab === 'rejected'"
+          (click)="selectTab('rejected')"
+        >
+          <i class="bi bi-x-circle me-2"></i>
+          Rejected ({{ rejectedExpenses.length }})
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Expense List -->
+  <div class="container-fluid mt-3">
+    <div class="expense-list">
+      <div *ngIf="currentExpenses.length === 0" class="empty-state">
+        <i class="bi bi-inbox"></i>
+        <h3>No {{ selectedTab }} expenses</h3>
+        <p>There are no expenses in this category at the moment.</p>
+      </div>
+
+      <div *ngFor="let expense of currentExpenses" class="expense-card">
+        <div class="expense-header">
+          <div>
+            <h4>{{ expense.employeeName }}</h4>
+            <span class="employee-id"
+              >Employee ID: {{ expense.employeeId }}</span
+            >
+          </div>
+          <div class="expense-amount">${{ expense.amount.toFixed(2) }}</div>
+        </div>
+
+        <div class="expense-details">
+          <div class="detail-item">
+            <i class="bi bi-tag me-2"></i>
+            <strong>Type:</strong> {{ expense.type }}
+          </div>
+          <div class="detail-item">
+            <i class="bi bi-calendar me-2"></i>
+            <strong>Date:</strong> {{ expense.date | date : "MMM dd, yyyy" }}
+          </div>
+          <div class="detail-item">
+            <i class="bi bi-file-text me-2"></i>
+            <strong>Description:</strong> {{ expense.description }}
+          </div>
+        </div>
+
+        <div class="expense-actions" *ngIf="expense.status === 'pending'">
+          <button class="btn btn-success" (click)="approveExpense(expense)">
+            <i class="bi bi-check-lg me-2"></i>Approve
+          </button>
+          <button class="btn btn-danger" (click)="rejectExpense(expense)">
+            <i class="bi bi-x-lg me-2"></i>Reject
+          </button>
+        </div>
+
+        <div class="expense-status" *ngIf="expense.status !== 'pending'">
+          <span
+            class="badge"
+            [class.bg-success]="expense.status === 'approved'"
+            [class.bg-danger]="expense.status === 'rejected'"
+          >
+            <i
+              class="bi"
+              [class.bi-check-circle]="expense.status === 'approved'"
+              [class.bi-x-circle]="expense.status === 'rejected'"
+            ></i>
+            {{ expense.status | uppercase }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

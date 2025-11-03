@@ -98,4 +98,67 @@ li {
       transform: rotate(90deg);
     }
   }
+
+  h5 {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 1.5rem;
+
+    i {
+      font-size: 1.2rem;
+    }
+  }
+
+  .table-responsive {
+    margin-top: 1rem;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .table {
+    color: #d1d5db;
+    margin-bottom: 0;
+
+    thead {
+      background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+      
+      th {
+        border-bottom: 2px solid #60a5fa;
+        padding: 1rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+        color: #60a5fa;
+      }
+    }
+
+    tbody {
+      tr {
+        transition: all 0.2s ease;
+        border-bottom: 1px solid #2a2a2a;
+
+        &:hover {
+          background: rgba(96, 165, 250, 0.1);
+        }
+
+        td {
+          padding: 1rem;
+          vertical-align: middle;
+        }
+      }
+    }
+  }
+
+  .badge {
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    border-radius: 6px;
+  }
+
+  .spinner-border {
+    width: 3rem;
+    height: 3rem;
+  }
 }

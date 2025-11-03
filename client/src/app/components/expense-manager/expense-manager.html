@@ -70,21 +70,103 @@
               data-bs-target="#presentPanel"
               aria-label="Close"
             ></button>
-            <app-presentexpenses></app-presentexpenses>
+            <app-presentexpenses (expenseSubmitted)="loadAllExpenses()"></app-presentexpenses>
           </div>
         </div>
 
         <div class="collapse" id="approvedPanel" data-bs-parent="#panelGroup">
           <div class="card card-body">
-            <h5 class="text-info">Approved Expenses</h5>
-            <p class="text-muted mb-0">No approved expenses to display yet.</p>
+            <button
+              type="button"
+              class="btn-close position-absolute top-0 end-0 m-2"
+              data-bs-toggle="collapse"
+              data-bs-target="#approvedPanel"
+              aria-label="Close"
+            ></button>
+            <h5 class="text-success mb-3">
+              <i class="bi bi-check-circle me-2"></i>Approved Expenses
+            </h5>
+            
+            <div *ngIf="isLoadingApproved" class="text-center py-3">
+              <div class="spinner-border text-success" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+
+            <div *ngIf="!isLoadingApproved && approvedExpenses.length === 0" class="text-center py-3">
+              <p class="text-muted mb-0">No approved expenses to display yet.</p>
+            </div>
+
+            <div *ngIf="!isLoadingApproved && approvedExpenses.length > 0" class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let expense of approvedExpenses">
+                    <td>{{ expense.expenseDate | date: 'MMM dd, yyyy' }}</td>
+                    <td>{{ expense.expenseTitle }}</td>
+                    <td>{{ expense.expenseDescription }}</td>
+                    <td class="text-success fw-bold">${{ expense.expenseAmount }}</td>
+                    <td><span class="badge bg-success">Approved</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
 
         <div class="collapse" id="pendingPanel" data-bs-parent="#panelGroup">
           <div class="card card-body">
-            <h5 class="text-warning">Pending Approvals</h5>
-            <p class="text-muted mb-0">You have no pending approvals.</p>
+            <button
+              type="button"
+              class="btn-close position-absolute top-0 end-0 m-2"
+              data-bs-toggle="collapse"
+              data-bs-target="#pendingPanel"
+              aria-label="Close"
+            ></button>
+            <h5 class="text-warning mb-3">
+              <i class="bi bi-clock-history me-2"></i>Pending Approvals
+            </h5>
+            
+            <div *ngIf="isLoadingPending" class="text-center py-3">
+              <div class="spinner-border text-warning" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+
+            <div *ngIf="!isLoadingPending && pendingExpenses.length === 0" class="text-center py-3">
+              <p class="text-muted mb-0">You have no pending approvals.</p>
+            </div>
+
+            <div *ngIf="!isLoadingPending && pendingExpenses.length > 0" class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let expense of pendingExpenses">
+                    <td>{{ expense.expenseDate | date: 'MMM dd, yyyy' }}</td>
+                    <td>{{ expense.expenseTitle }}</td>
+                    <td>{{ expense.expenseDescription }}</td>
+                    <td class="text-warning fw-bold">${{ expense.expenseAmount }}</td>
+                    <td><span class="badge bg-warning text-dark">Pending</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
 
@@ -94,8 +176,49 @@
           data-bs-parent="#panelGroup"
         >
           <div class="card card-body">
-            <h5 class="text-secondary">Not Submitted</h5>
-            <p class="text-muted mb-0">Draft expenses will appear here.</p>
+            <button
+              type="button"
+              class="btn-close position-absolute top-0 end-0 m-2"
+              data-bs-toggle="collapse"
+              data-bs-target="#notSubmittedPanel"
+              aria-label="Close"
+            ></button>
+            <h5 class="text-secondary mb-3">
+              <i class="bi bi-file-earmark me-2"></i>Not Submitted (Drafts)
+            </h5>
+            
+            <div *ngIf="isLoadingSaved" class="text-center py-3">
+              <div class="spinner-border text-secondary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+
+            <div *ngIf="!isLoadingSaved && savedExpenses.length === 0" class="text-center py-3">
+              <p class="text-muted mb-0">Draft expenses will appear here.</p>
+            </div>
+
+            <div *ngIf="!isLoadingSaved && savedExpenses.length > 0" class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let expense of savedExpenses">
+                    <td>{{ expense.expenseDate | date: 'MMM dd, yyyy' }}</td>
+                    <td>{{ expense.expenseTitle }}</td>
+                    <td>{{ expense.expenseDescription }}</td>
+                    <td class="text-secondary fw-bold">${{ expense.expenseAmount }}</td>
+                    <td><span class="badge bg-secondary">Draft</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

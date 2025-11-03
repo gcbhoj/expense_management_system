@@ -20,6 +20,32 @@
         >
       </li>
     </ul>
+    <div class="ms-auto">
+      <a
+        *ngIf="!adminAuthService.isLoggedIn()"
+        class="btn btn-sm btn-outline-info"
+        [routerLink]="['/admin/login']"
+        type="button"
+      >
+        <i class="bi bi-shield-lock me-1"></i>Admin Login
+      </a>
+      <div *ngIf="adminAuthService.isLoggedIn()" class="d-flex gap-2">
+        <a
+          class="btn btn-sm btn-info"
+          [routerLink]="['/admin/dashboard']"
+          type="button"
+        >
+          <i class="bi bi-speedometer2 me-1"></i>Dashboard
+        </a>
+        <button
+          class="btn btn-sm btn-outline-danger"
+          (click)="logout()"
+          type="button"
+        >
+          <i class="bi bi-box-arrow-right me-1"></i>Logout
+        </button>
+      </div>
+    </div>
   </div>
 </nav>
 
@@ -38,6 +64,22 @@
   <a [routerLink]="['aboutus']" class="p-3" title="About Us" type="button"
     >👨‍🎓</a
   >
+  <a
+    *ngIf="!adminAuthService.isLoggedIn()"
+    [routerLink]="['/admin/login']"
+    class="p-3"
+    title="Admin"
+    type="button"
+    >🔐</a
+  >
+  <a
+    *ngIf="adminAuthService.isLoggedIn()"
+    [routerLink]="['/admin/dashboard']"
+    class="p-3"
+    title="Admin Dashboard"
+    type="button"
+    >👨‍💼</a
+  >
 </nav>
 
 <!-- Bottom bar for small devices -->
@@ -55,5 +97,20 @@
   <a [routerLink]="['aboutus']" class="p-3" title="About Us" type="button"
     >👨‍🎓</a
   >
-
+  <a
+    *ngIf="!adminAuthService.isLoggedIn()"
+    [routerLink]="['/admin/login']"
+    class="p-3"
+    title="Admin"
+    type="button"
+    >🔐</a
+  >
+  <a
+    *ngIf="adminAuthService.isLoggedIn()"
+    [routerLink]="['/admin/dashboard']"
+    class="p-3"
+    title="Admin Dashboard"
+    type="button"
+    >👨‍💼</a
+  >
 </nav>

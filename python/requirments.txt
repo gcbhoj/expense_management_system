@@ -1,4 +1,5 @@
 Flask
+flask-cors
 img2pdf
 pypdf2
 image-text-reader

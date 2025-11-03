@@ -1,0 +1,78 @@
+<div class="admin-login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <i class="bi bi-shield-lock-fill"></i>
+      <h2>Admin Login</h2>
+      <p>Access the expense management dashboard</p>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" class="login-form">
+      <!-- Email Input -->
+      <div class="form-floating mb-3">
+        <input
+          type="email"
+          class="form-control"
+          id="adminEmail"
+          placeholder=" "
+          [(ngModel)]="email"
+          name="email"
+          required
+          [disabled]="isLoading"
+        />
+        <label for="adminEmail">Email Address</label>
+      </div>
+
+      <!-- Password Input -->
+      <div class="form-floating mb-3">
+        <input
+          type="password"
+          class="form-control"
+          id="adminPassword"
+          placeholder=" "
+          [(ngModel)]="password"
+          name="password"
+          required
+          [disabled]="isLoading"
+        />
+        <label for="adminPassword">Password</label>
+      </div>
+
+      <!-- Error Message -->
+      <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        {{ errorMessage }}
+      </div>
+
+      <!-- Demo Credentials Info -->
+      <div class="demo-info mb-3">
+        <small class="text-muted">
+          <i class="bi bi-info-circle me-1"></i>
+          Demo credentials: admin@expense.com / admin123
+        </small>
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        class="btn btn-primary w-100"
+        [disabled]="isLoading"
+      >
+        <span
+          *ngIf="isLoading"
+          class="spinner-border spinner-border-sm me-2"
+        ></span>
+        <span *ngIf="!isLoading"
+          ><i class="bi bi-box-arrow-in-right me-2"></i
+        ></span>
+        {{ isLoading ? "Logging in..." : "Login" }}
+      </button>
+    </form>
+
+    <div class="login-footer">
+      <a routerLink="/home" class="text-decoration-none">
+        <i class="bi bi-arrow-left me-1"></i>
+        Back to Home
+      </a>
+    </div>
+  </div>
+</div>
