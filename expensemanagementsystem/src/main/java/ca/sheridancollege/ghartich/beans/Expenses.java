@@ -44,7 +44,7 @@ public class Expenses{
 	
 	@Builder.Default
 	@Enumerated(EnumType.STRING)
-	private ApprovalStatus approvalStatus = ApprovalStatus.PENDING;
+	private ApprovalStatus approvalStatus = ApprovalStatus.NOTSUBMITTED;
 	
 //	@NonNull
 	private String storageId;

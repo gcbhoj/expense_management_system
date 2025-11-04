@@ -1,0 +1,47 @@
+<div class="container mt-3">
+  <h3>Approved Expenses</h3>
+
+  <div *ngIf="approvedExpenses.length === 0" class="alert alert-info">
+    No approved expenses found.
+  </div>
+
+  <ul class="list-group">
+    <li
+      class="list-group-item"
+      *ngFor="let expense of approvedExpenses; let i = index"
+    >
+      <div class="d-flex justify-content-between align-items-center">
+        <span>{{ expense.expenseTitle }}</span>
+        <span>{{ expense.approvedDate | date : "shortDate" }}</span>
+        <button
+          class="btn btn-sm btn-outline-primary"
+          type="button"
+          (click)="toggleDetails('details' + i)"
+        >
+          Details
+        </button>
+      </div>
+
+      <div class="collapse mt-2" [id]="'details' + i">
+        <ul class="list-group">
+          <li class="list-group-item">
+            <strong>Amount:</strong> {{ expense.expenseAmount | currency }}
+          </li>
+          <li class="list-group-item">
+            <strong>Description:</strong> {{ expense.expenseDescription }}
+          </li>
+          <li class="list-group-item">
+            <strong>Expense Date:</strong>
+            {{ expense.expenseDate | date : "shortDate" }}
+          </li>
+          <li class="list-group-item">
+            <strong>Approval Status:</strong> {{ expense.approvalStatus }}
+          </li>
+          <li class="list-group-item">
+            <strong>Approved By:</strong> {{ expense.approvedBy }}
+          </li>
+        </ul>
+      </div>
+    </li>
+  </ul>
+</div>

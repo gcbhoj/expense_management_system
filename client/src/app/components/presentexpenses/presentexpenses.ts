@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NewExpense } from '../../../../public/models/newexpenses';
 import * as bootstrap from 'bootstrap';
+import { ExpenseServices } from '../../service/expense-services';
 
 @Component({
   selector: 'app-presentexpenses',
@@ -12,6 +13,8 @@ import * as bootstrap from 'bootstrap';
   styleUrl: './presentexpenses.scss',
 })
 export class Presentexpenses {
+  constructor(private expenseService: ExpenseServices) {}
+
   @ViewChild('successToast', { static: true }) successToast!: ElementRef;
   @ViewChild('errorToast', { static: true }) errorToast!: ElementRef;
 
@@ -30,18 +33,6 @@ export class Presentexpenses {
   }
 
   submitForm() {
-    // Validate Employee ID
-    if (!this.newExpenses.employeeId) {
-      this.showError('Please Enter Employee Id.');
-      return;
-    }
-
-    // Validate Employee Name
-    if (!this.newExpenses.employeeName) {
-      this.showError('Employee Name cannot be empty');
-      return;
-    }
-    //validate expense amount
     if (
       !this.newExpenses.expenseAmount ||
       this.newExpenses.expenseAmount <= 0
@@ -50,36 +41,46 @@ export class Presentexpenses {
       return;
     }
 
-    // Validate Receipt
     if (!this.newExpenses.expenseReceipt) {
-      this.showError('Please upload a receipt');
-      return;
-    }
-    // validating expense type
-    if (!this.newExpenses.expenseType) {
-      this.showError('Expense Type cannot be empty.');
-      return;
-    }
-    // validating expense description
-    if (!this.newExpenses.expenseDescription) {
-      this.showError('Expense description cannot be empty.');
-      return;
-    }
-    // validating expense data
-    if (!this.newExpenses.expenseDate) {
-      this.showError('Expense Date cannot be empty');
-      return;
-    }
-    if (
-      this.newExpenses.expenseDate &&
-      new Date(this.newExpenses.expenseDate) > new Date()
-    ) {
-      this.showError('Expense date cannot be in future');
+      this.showError('Please upload a receipt.');
       return;
     }
 
-    console.log('Form submitted successfully:', this.newExpenses);
+    if (!this.newExpenses.expenseTitle) {
+      this.showError('Expense Type cannot be empty.');
+      return;
+    }
+
+    if (!this.newExpenses.expenseDescription) {
+      this.showError('Expense Description cannot be empty.');
+      return;
+    }
+
+    if (!this.newExpenses.expenseDate) {
+      this.showError('Expense Date cannot be empty.');
+      return;
+    }
+
+    if (new Date(this.newExpenses.expenseDate) > new Date()) {
+      this.showError('Expense Date cannot be in the future.');
+      return;
+    }
+
+    // ✅ Call backend through service
+    this.expenseService.saveClaimExpenses(this.newExpenses).subscribe({
+      next: (response) => {
+        console.log('Expense submitted successfully:', response);
+        this.showSuccess('Expense submitted successfully!');
+        this.newExpenses = new NewExpense(); // ✅ Reset form
+      },
+      error: (error) => {
+        console.error('Error submitting expense:', error);
+        this.showError('Failed to submit expense. Please try again.');
+      },
+    });
   }
+
+ 
 
   showSuccess(message: string) {
     this.successMessage = message;

@@ -1,0 +1,46 @@
+<div class="container mt-3">
+  <h3>Saved Expenses</h3>
+
+  <div *ngIf="savedExpenses.length === 0" class="alert alert-info">
+    No saved expenses found.
+  </div>
+
+  <ul class="list-group" *ngIf="savedExpenses.length > 0">
+    <li
+      class="list-group-item"
+      *ngFor="let expense of savedExpenses; let i = index"
+    >
+      <div class="d-flex justify-content-between align-items-center">
+        <span>{{ expense.expenseTitle }} - ${{ expense.expenseAmount }}</span>
+        <div>
+          <button
+            class="btn btn-sm btn-outline-primary"
+            type="button"
+            data-bs-toggle="collapse"
+            [attr.data-bs-target]="'#details' + i"
+            aria-expanded="false"
+            [attr.aria-controls]="'details' + i"
+          >
+            Details
+          </button>
+          <button class="btn btn-sm btn-success" type="button">Submit</button>
+        </div>
+      </div>
+
+      <div class="collapse mt-2" [id]="'details' + i">
+        <ul class="list-group">
+          <li class="list-group-item">
+            <strong>Description:</strong> {{ expense.expenseDescription }}
+          </li>
+          <li class="list-group-item">
+            <strong>Expense Date:</strong>
+            {{ expense.expenseDate | date : "shortDate" }}
+          </li>
+          <li class="list-group-item">
+            <strong>Application Status:</strong> {{ expense.applicationStatus }}
+          </li>
+        </ul>
+      </div>
+    </li>
+  </ul>
+</div>
