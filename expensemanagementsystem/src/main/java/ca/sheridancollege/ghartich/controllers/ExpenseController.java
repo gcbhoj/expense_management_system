@@ -19,6 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,7 +45,7 @@ import ca.sheridancollege.ghartich.repository.ExpenseItemsRepository;
 import ca.sheridancollege.ghartich.repository.ExpenseListRepository;
 import ca.sheridancollege.ghartich.repository.ExpenseRepository;
 import lombok.AllArgsConstructor;
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping(value = {"/api/v1/expenses"})
 @AllArgsConstructor
@@ -314,8 +315,8 @@ public class ExpenseController {
 	    			 .body(Map.of("status",404,"message","List is Empty"));
 	     }
 	     
-	     return ResponseEntity.status(HttpStatus.FOUND)
-	    		 .body(Map.of("status",302,"message", approvedExpenses));
+	     return ResponseEntity.status(HttpStatus.OK)
+	    		 .body(Map.of("status",200,"data", approvedExpenses));
 		
 			
 		}catch(Exception e) {
@@ -363,8 +364,8 @@ public class ExpenseController {
 		    			 .body(Map.of("status",404,"message","List is Empty"));
 		     }
 		     
-		     return ResponseEntity.status(HttpStatus.FOUND)
-		    		 .body(Map.of("status",302,"message", pendingExpenses));
+		     return ResponseEntity.status(HttpStatus.OK)
+		    		 .body(Map.of("status",200,"message", pendingExpenses));
 			
 			
 		}catch(Exception e) {
@@ -403,8 +404,8 @@ public class ExpenseController {
 		    			 .body(Map.of("status",404,"message","No saved Expenses"));
 		     }
 		     
-		     return ResponseEntity.status(HttpStatus.FOUND)
-		    		 .body(Map.of("status",302,"message", savedExpenses));
+		     return ResponseEntity.status(HttpStatus.OK)
+		    		 .body(Map.of("status",200,"message", savedExpenses));
 		     
 			
 		}catch(Exception e) {
@@ -769,7 +770,7 @@ public class ExpenseController {
 
             return ResponseEntity.status(HttpStatus.CREATED)
     				.body(Map.of("status",200,
-    						"message","Expense Saved Sucessfully","employee",employee));
+    						"message","Expense Saved Sucessfully","expenseId",expense.getExpenseId()));
     		
     	}catch(Exception e) {
     		e.printStackTrace();

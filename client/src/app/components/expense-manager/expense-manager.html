@@ -77,14 +77,18 @@
         <div class="collapse" id="approvedPanel" data-bs-parent="#panelGroup">
           <div class="card card-body">
             <h5 class="text-info">Approved Expenses</h5>
-            <p class="text-muted mb-0">No approved expenses to display yet.</p>
+            <p class="text-muted mb-0">
+              <app-approvedexpenses></app-approvedexpenses>
+            </p>
           </div>
         </div>
 
         <div class="collapse" id="pendingPanel" data-bs-parent="#panelGroup">
           <div class="card card-body">
             <h5 class="text-warning">Pending Approvals</h5>
-            <p class="text-muted mb-0">You have no pending approvals.</p>
+            <p class="text-muted mb-0">
+              <app-pendingexpenses></app-pendingexpenses>
+            </p>
           </div>
         </div>
 
@@ -95,7 +99,9 @@
         >
           <div class="card card-body">
             <h5 class="text-secondary">Not Submitted</h5>
-            <p class="text-muted mb-0">Draft expenses will appear here.</p>
+            <p class="text-muted mb-0">
+              <app-savedexpenses></app-savedexpenses>
+            </p>
           </div>
         </div>
       </div>
