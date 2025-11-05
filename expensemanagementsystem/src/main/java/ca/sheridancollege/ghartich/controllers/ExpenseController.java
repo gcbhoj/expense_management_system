@@ -465,16 +465,24 @@ public class ExpenseController {
 				
 			}
 			
-			if(!expense.getApprovalStatus().equals(ApprovalStatus.PENDING)) {
+			if(expense.getApprovalStatus().equals(ApprovalStatus.PENDING)) {
 				return ResponseEntity.status(HttpStatus.CONFLICT)
-						.body(Map.of("status",409,"message","Only Pending Application can be submitted"));
+						.body(Map.of("status",409,"message","Application has already been submitted"));
 			}
+			
+			if(!expense.getApprovalStatus().equals(ApprovalStatus.NOTSUBMITTED)) {
+				return ResponseEntity.status(HttpStatus.CONFLICT)
+						.body(Map.of("status",409,"message","Only Not Submitted application can be submitted"));
+			}
+			
 			
 			if(expense.getApplicationStatus().equals(ApplicationStatus.SUBMITTED)) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 						.body(Map.of("status",400,"message","Receipt already submitted"));
 			}
 			
+			
+			expense.setApprovalStatus(ApprovalStatus.PENDING);
 			expense.setApplicationStatus(ApplicationStatus.SUBMITTED);
 			expenseRepo.save(expense);
 			
