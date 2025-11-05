@@ -52,4 +52,9 @@ export class ExpenseServices {
         map((response) => response.message) // extract the array
       );
   }
+
+  submitExpenses(employeeId: number, expenseId: number): Observable<any> {
+    const url = `${this.apiUrl}/submit/${employeeId}/${expenseId}`;
+    return this.http.patch<any>(url, {}, { responseType: 'json' });
+  }
 }

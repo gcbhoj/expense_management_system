@@ -23,7 +23,13 @@
           >
             Details
           </button>
-          <button class="btn btn-sm btn-success" type="button">Submit</button>
+          <button
+            class="btn btn-sm btn-success"
+            type="button"
+            (click)="submitExpenses(expense.expenseId)"
+          >
+            Submit
+          </button>
         </div>
       </div>
 
